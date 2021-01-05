@@ -13,21 +13,25 @@ import (
 	"syscall"
 )
 
-func Execute(test bool, natsUri, environment, level string, rate int, handler diary.H, argsMap M) {
+func Execute(test bool, natsUri, database, authDb, level string, rate, apiPort int, handler diary.H, argsMap M) {
 	lvl := diary.ConvertFromTextLevel(level)
 	if diary.IsValidLevel(lvl) {
 		panic(fmt.Sprintf("level must be one of the following values: %s", strings.Join(diary.TextLevels, ", ")))
 	}
 	testMode = test
 	traceRate = rate
-	env = environment
+	db = database
+	auth = authDb
+	port = apiPort
 
 	args = M{}
 	if argsMap != nil {
 		args = argsMap
 	}
 	args["nats"] = natsUri
-	args["env"] = environment
+	args["database"] = database
+	args["auth"] = auth
+	args["port"] = port
 
 	natsConn, err := nats.Connect(natsUri)
 	if err != nil {

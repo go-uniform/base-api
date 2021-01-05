@@ -18,7 +18,19 @@ var traceRate int
 var c uniform.IConn
 
 // A private package level variable that contains the running service's environment
-var env string
+var db string
+
+// A private package level variable that contains the running service's environment
+var auth string
+
+// A private package level variable that contains the running service's environment
+var port int
 
 // A private package level variable that indicates if service is in test mode
 var testMode = false
+
+// A private package level variable that contains all subscribing actions
+var actions = make(map[string]uniform.S)
+
+// A private package level variable that contains all topic subscriptions
+var subscriptions = make(map[string]uniform.ISubscription)
