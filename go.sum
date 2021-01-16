@@ -58,6 +58,10 @@ github.com/go-uniform/uniform v0.0.0-20210116085924-26df409d6ad5 h1:J5e5dyUnMka5
 github.com/go-uniform/uniform v0.0.0-20210116085924-26df409d6ad5/go.mod h1:NwnyaG6I9OgMKPeqJJwzHhugFbPksO7QKYr/SMt6ahU=
 github.com/go-uniform/uniform v0.0.0-20210116090337-12a9bc2b23e8 h1:Q+TTX549806tzXlTRyxQszggrmVT6dTAGHkOxWaDZzs=
 github.com/go-uniform/uniform v0.0.0-20210116090337-12a9bc2b23e8/go.mod h1:NwnyaG6I9OgMKPeqJJwzHhugFbPksO7QKYr/SMt6ahU=
+github.com/go-uniform/uniform v0.0.0-20210116095117-4572dbac1e1a h1:YAQ5M/mmjSfMdKbm70Ps54L8ONSnsAMHCJMNrRGgrFA=
+github.com/go-uniform/uniform v0.0.0-20210116095117-4572dbac1e1a/go.mod h1:NwnyaG6I9OgMKPeqJJwzHhugFbPksO7QKYr/SMt6ahU=
+github.com/go-uniform/uniform v0.0.0-20210116102400-cbd15df96787 h1:Qls+BU1FMZrEWLdlGF8yAdUrS+6j5Ur+7exEwfXBvxE=
+github.com/go-uniform/uniform v0.0.0-20210116102400-cbd15df96787/go.mod h1:NwnyaG6I9OgMKPeqJJwzHhugFbPksO7QKYr/SMt6ahU=
 github.com/gobuffalo/attrs v0.0.0-20190224210810-a9411de4debd/go.mod h1:4duuawTqi2wkkpB4ePgWMaai6/Kc6WEz83bhFwpHzj0=
 github.com/gobuffalo/depgen v0.0.0-20190329151759-d478694a28d3/go.mod h1:3STtPUQYuzV0gBVOY3vy6CfMm/ljR4pABfrTeHNLHUY=
 github.com/gobuffalo/depgen v0.1.0/go.mod h1:+ifsuy7fhi15RWncXQQKjWS9JPkdah5sZvtHc2RXGlg=

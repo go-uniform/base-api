@@ -13,9 +13,9 @@ const (
 
 func Run(page diary.IPage, c uniform.IConn) {
 	if err := page.Scope("run", func(p diary.IPage) {
-		m := c.Mongo(p, "")
+		m := c.Mongo(p, AppProject)
 
-		m.Insert(time.Second, "pay-curve", "names", M{
+		m.Insert(time.Second, "uniform", "names", M{
 			"name": "Name",
 		}, nil, nil)
 	}); err != nil {
