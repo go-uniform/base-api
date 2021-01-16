@@ -47,6 +47,17 @@ func Execute(test bool, natsUri, database, authDb, level string, rate, apiPort i
 
 	d = diary.Dear(AppClient, AppProject, AppName, nil, "git@github.com:go-uniform/uniform.git", AppCommit, nil, nil, lvl, handler)
 	d.Page(-1, traceRate, true, AppName, nil, "", "", nil, func(p diary.IPage) {
+		p.Notice("base.execute", diary.M{
+			"database": database,
+			"auth": auth,
+			"port": port,
+			"testMode": testMode,
+			"nats": natsUri,
+			"level": level,
+			"rate": rate,
+			"args": argsMap,
+		})
+
 		// subscribe all actions
 		for topic, handler := range actions {
 			p.Info("subscribe", diary.M{
@@ -65,7 +76,7 @@ func Execute(test bool, natsUri, database, authDb, level string, rate, apiPort i
 			subscriptions[topic] = subscription
 		}
 
-		Run(p)
+		Run(p, c)
 
 		// Go signal notification works by sending `os.Signal`
 		// values on a channel. We'll create a channel to

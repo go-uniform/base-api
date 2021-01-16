@@ -38,19 +38,9 @@ func init() {
 	runCmd.Flags().IntVarP(&rate, "rate", "r", 1000, "The sample rate of the trace logs used for performance auditing [set to -1 to log every trace]")
 	runCmd.Flags().BoolVar(&test, "test", false, "A flag indicating if service should enter into test mode")
 
-	runCmd.Flags().StringVarP(&database, "database", "d", "", "The database environment to use")
-	runCmd.Flags().StringVarP(&auth, "auth", "a", "<<database>>", "The auth environment to use")
+	runCmd.Flags().StringVarP(&database, "database", "d", service.AppName, "The database environment to use")
+	runCmd.Flags().StringVarP(&auth, "auth", "a", service.AppName, "The auth environment to use")
 	runCmd.Flags().IntVarP(&rate, "port", "p", 8000, "The port to serve the API on")
-
-	if err := runCmd.MarkFlagRequired("database"); err != nil {
-		panic(err)
-	}
-	if err := runCmd.MarkFlagRequired("auth"); err != nil {
-		panic(err)
-	}
-	if err := runCmd.MarkFlagRequired("port"); err != nil {
-		panic(err)
-	}
 
 	rootCmd.AddCommand(runCmd)
 }
