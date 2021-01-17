@@ -37,6 +37,7 @@ func Execute(test bool, natsUri, database, authDb, level string, rate, apiPort i
 	if err != nil {
 		panic(err)
 	}
+	d = diary.Dear(AppClient, AppProject, AppName, nil, "git@github.com:go-uniform/uniform.git", AppCommit, nil, nil, lvl, handler)
 	c, err = uniform.ConnectorNats(d, natsConn)
 	if err != nil {
 		panic(err)
@@ -45,7 +46,6 @@ func Execute(test bool, natsUri, database, authDb, level string, rate, apiPort i
 	// Close connection
 	defer c.Close()
 
-	d = diary.Dear(AppClient, AppProject, AppName, nil, "git@github.com:go-uniform/uniform.git", AppCommit, nil, nil, lvl, handler)
 	d.Page(-1, traceRate, true, AppName, nil, "", "", nil, func(p diary.IPage) {
 		p.Notice("base.execute", diary.M{
 			"database": database,
