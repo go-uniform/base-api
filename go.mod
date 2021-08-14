@@ -7,6 +7,7 @@ require (
 	github.com/go-diary/diary v0.0.0-20210101215357-b1f47bcad4b4
 	github.com/go-uniform/uniform v0.0.0-20210814210846-35b4229deca6
 	github.com/golang/snappy v0.0.4 // indirect
+	github.com/gorilla/mux v1.8.0 // indirect
 	github.com/klauspost/compress v1.13.4 // indirect
 	github.com/nats-io/gnatsd v1.4.1 // indirect
 	github.com/nats-io/go-nats v1.7.2
