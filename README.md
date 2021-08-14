@@ -8,6 +8,7 @@ go generate
 ```
 This will create a file `service/meta.go` which is ignored by the `.gitignore` and contains the project's resources and metadata.
 Create `.description` file to override the description as pulled from Github.
+Then ensure you set the `AppClient`, `AppProject` and `AppService` constants in the `service/run.go` file before doing anything else.
 
 ### CLI Commands
 

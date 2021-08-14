@@ -41,6 +41,13 @@ func Execute(limit int, test bool, natsUri string, natsOptions []nats.Option, ar
 	defer c.Close()
 
 	d.Page(-1, traceRate, true, AppName, nil, "", "", nil, func(p diary.IPage) {
+		// run service custom startup routine before subscribing any actions
+		if err := p.Scope("run", func(p diary.IPage) {
+			Run(p)
+		}); err != nil {
+			panic(err)
+		}
+
 		// subscribe all actions [generic]
 		for topic, handler := range actions {
 			p.Info(fmt.Sprintf("subscribe.%s", topic), diary.M{
@@ -81,12 +88,6 @@ func Execute(limit int, test bool, natsUri string, natsOptions []nats.Option, ar
 				})
 			}
 			subscriptions[topic] = subscription
-		}
-
-		if err := p.Scope("run", func(p diary.IPage) {
-			Run(p)
-		}); err != nil {
-			panic(err)
 		}
 
 		// Go signal notification works by sending `os.Signal`

@@ -61,6 +61,16 @@ github.com/go-uniform/uniform v0.0.0-20210813201915-b2a923bd5803 h1:ct2JtOAev64s
 github.com/go-uniform/uniform v0.0.0-20210813201915-b2a923bd5803/go.mod h1:6z51aaF30ZpbDXGdazLhO89nZtQw6LdVW+5e61C6NcY=
 github.com/go-uniform/uniform v0.0.0-20210813202412-b966b9f534af h1:1gd1Y9QTeAGjkrd40uG+O4F6A0zcqlRDCJPFBc6tMfc=
 github.com/go-uniform/uniform v0.0.0-20210813202412-b966b9f534af/go.mod h1:6z51aaF30ZpbDXGdazLhO89nZtQw6LdVW+5e61C6NcY=
+github.com/go-uniform/uniform v0.0.0-20210814183156-f5778f1d01f9 h1:YXdmpeZo4X/AbDYHFldTUR0CG7PvMTtnW3gXJBcborE=
+github.com/go-uniform/uniform v0.0.0-20210814183156-f5778f1d01f9/go.mod h1:6z51aaF30ZpbDXGdazLhO89nZtQw6LdVW+5e61C6NcY=
+github.com/go-uniform/uniform v0.0.0-20210814191157-284426adad6e h1:L4RQPvYsqzalmgyPd+904ppRXIkescMCt0XmBqvxpA8=
+github.com/go-uniform/uniform v0.0.0-20210814191157-284426adad6e/go.mod h1:6z51aaF30ZpbDXGdazLhO89nZtQw6LdVW+5e61C6NcY=
+github.com/go-uniform/uniform v0.0.0-20210814192935-36404fb5f0b8 h1:66UIAmr1ipYOx0Ulbf/TtCCIH6RvPS4upegdGZIH7uo=
+github.com/go-uniform/uniform v0.0.0-20210814192935-36404fb5f0b8/go.mod h1:6z51aaF30ZpbDXGdazLhO89nZtQw6LdVW+5e61C6NcY=
+github.com/go-uniform/uniform v0.0.0-20210814203447-1f97bac04bad h1:FhYRWUEQtlPjoizwYC9BLggr31vT94hWJmEcy1VRiVI=
+github.com/go-uniform/uniform v0.0.0-20210814203447-1f97bac04bad/go.mod h1:6z51aaF30ZpbDXGdazLhO89nZtQw6LdVW+5e61C6NcY=
+github.com/go-uniform/uniform v0.0.0-20210814210846-35b4229deca6 h1:HLjKAS+/yvO6Gl1oVum6BsfjNB0nVYRzO7qS9hJrmUw=
+github.com/go-uniform/uniform v0.0.0-20210814210846-35b4229deca6/go.mod h1:6z51aaF30ZpbDXGdazLhO89nZtQw6LdVW+5e61C6NcY=
 github.com/gobuffalo/attrs v0.0.0-20190224210810-a9411de4debd/go.mod h1:4duuawTqi2wkkpB4ePgWMaai6/Kc6WEz83bhFwpHzj0=
 github.com/gobuffalo/depgen v0.0.0-20190329151759-d478694a28d3/go.mod h1:3STtPUQYuzV0gBVOY3vy6CfMm/ljR4pABfrTeHNLHUY=
 github.com/gobuffalo/depgen v0.1.0/go.mod h1:+ifsuy7fhi15RWncXQQKjWS9JPkdah5sZvtHc2RXGlg=
@@ -298,6 +308,8 @@ golang.org/x/crypto v0.0.0-20201221181555-eec23a3978ad/go.mod h1:jdWPYTVW3xRLrWP
 golang.org/x/crypto v0.0.0-20210314154223-e6e6c4f2bb5b/go.mod h1:T9bdIzuCu7OtxOm1hfPfRQxPLYneinmdGuTeoZ9dtd4=
 golang.org/x/crypto v0.0.0-20210812204632-0ba0e8f03122 h1:AOT7vJYHE32m61R8d1WlcqhOO1AocesDsKpcMq+UOaA=
 golang.org/x/crypto v0.0.0-20210812204632-0ba0e8f03122/go.mod h1:GvvjBRRGRdwPK5ydBHafDWAxML/pGHZbMvKqRZ5+Abc=
+golang.org/x/crypto v0.0.0-20210813211128-0a44fdfbc16e h1:VvfwVmMH40bpMeizC9/K7ipM5Qjucuu16RWfneFPyhQ=
+golang.org/x/crypto v0.0.0-20210813211128-0a44fdfbc16e/go.mod h1:GvvjBRRGRdwPK5ydBHafDWAxML/pGHZbMvKqRZ5+Abc=
 golang.org/x/exp v0.0.0-20190121172915-509febef88a4/go.mod h1:CJ0aWSM057203Lf6IL+f9T1iT9GByDxfZKAQTCR3kQA=
 golang.org/x/exp v0.0.0-20190306152737-a1d7652674e8/go.mod h1:CJ0aWSM057203Lf6IL+f9T1iT9GByDxfZKAQTCR3kQA=
 golang.org/x/exp v0.0.0-20190510132918-efd6b22b2522/go.mod h1:ZjyILWgesfNpC6sMxTJOJm9Kp84zZh5NQWvqDGG3Qr8=

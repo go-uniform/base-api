@@ -8,6 +8,7 @@ const (
 	AppClient = "uprate"
 	AppProject = "uniform"
 	AppService = "service"
+	Database = AppService
 )
 
 func Run(p diary.IPage) {
