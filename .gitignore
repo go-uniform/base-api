@@ -1,0 +1,4 @@
+.idea
+cmd/base.meta.go
+service/base.meta.go
+build

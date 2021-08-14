@@ -1,0 +1,2 @@
+Files and directories in this root directory will be compiled directly into the binary file.
+But be warned that doing so will drastically increase your binary file size, so use it conservatively.
