@@ -11,5 +11,11 @@ func init() {
 }
 
 func ping(r uniform.IRequest, p diary.IPage) {
-	fmt.Println("\n\n\n---------- PONG --------------\n\n\n")
+	fmt.Println()
+	fmt.Println()
+	fmt.Println()
+	fmt.Println("---------- PONG --------------")
+	fmt.Println()
+	fmt.Println()
+	fmt.Println()
 }
