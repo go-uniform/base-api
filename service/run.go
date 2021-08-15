@@ -21,7 +21,6 @@ func Run(p diary.IPage) {
 	tlsKey := fmt.Sprint(args["tlsKey"])
 	origin := fmt.Sprint(args["origin"])
 
-	// todo: setup logic for common operations like auth
 	router := mux.NewRouter()
 
 	// serve api html documentation on the root path

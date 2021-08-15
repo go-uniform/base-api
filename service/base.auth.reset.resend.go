@@ -10,5 +10,9 @@ func init() {
 }
 
 func authResetResend(r uniform.IRequest, p diary.IPage) {
-
+	if err := p.Scope("auth.reset.resend", func(s diary.IPage) {
+		authRequest("reset.resend", r, s)
+	}); err != nil {
+		panic(err)
+	}
 }

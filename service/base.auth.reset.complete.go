@@ -10,5 +10,9 @@ func init() {
 }
 
 func authResetComplete(r uniform.IRequest, p diary.IPage) {
-
+	if err := p.Scope("auth.reset.complete", func(s diary.IPage) {
+		authRequest("reset.complete", r, s)
+	}); err != nil {
+		panic(err)
+	}
 }
