@@ -7,14 +7,7 @@ import (
 	"net/http"
 )
 
-const (
-	AppClient = "uprate"
-	AppProject = "uniform"
-	AppService = "service"
-	Database = AppProject
-)
-
-func Run(p diary.IPage) {
+func RunAfter(p diary.IPage) {
 	disableTls := args["disableTls"].(bool)
 	port := fmt.Sprint(args["port"])
 	tlsCert := fmt.Sprint(args["tlsCert"])
