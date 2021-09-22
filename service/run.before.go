@@ -1,9 +1,22 @@
 package service
 
 import (
+	"crypto/rsa"
+	"fmt"
+	"github.com/dgrijalva/jwt-go"
 	"github.com/go-diary/diary"
+	"io/ioutil"
 )
 
+var rsaPublic *rsa.PublicKey
+
 func RunBefore(p diary.IPage) {
-	// todo: add your custom startup logic here
+	data, err := ioutil.ReadFile(fmt.Sprint(args["jwt"]))
+	if err != nil {
+		panic(err)
+	}
+	rsaPublic, err = jwt.ParseRSAPublicKeyFromPEM(data)
+	if err != nil {
+		panic(err)
+	}
 }

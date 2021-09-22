@@ -9,6 +9,7 @@ var port string
 var tlsCert string
 var tlsKey string
 var origin string
+var jwt string
 
 var runCmd = &cobra.Command{
 	Use:   "run",
@@ -22,11 +23,13 @@ var runCmd = &cobra.Command{
 			"tlsKey": tlsKey,
 			"disableTls": disableTls,
 			"origin": origin,
+			"jwt": jwt,
 		})
 	},
 }
 
 func init() {
+	runCmd.Flags().StringVarP(&jwt, "jwt", "", "/etc/ssl/jwt.pub", "The public rsa key used to verify JWTs")
 	runCmd.Flags().StringVarP(&origin, "origin", "o", "*", "The allow origin list for CORS")
 	runCmd.Flags().StringVarP(&port, "port", "p", "8000", "The webserver port to host on")
 	runCmd.Flags().StringVarP(&tlsCert, "tls-cert", "", "/etc/ssl/certs/ssl-bundle.crt", "The webserver TLS certificate file path")

@@ -17,6 +17,9 @@ func RunAfter(p diary.IPage) {
 	router := mux.NewRouter()
 
 	// serve api html documentation on the root path
+	p.Info("bind.main", diary.M{
+		"path": "/",
+	})
 	router.HandleFunc("/", func(writer http.ResponseWriter, request *http.Request) {
 		writer.Header().Set("content-type", "text/html")
 		writer.WriteHeader(200)
@@ -24,6 +27,9 @@ func RunAfter(p diary.IPage) {
 	})
 
 	// serve openapi.json specification file
+	p.Info("bind.openapi", diary.M{
+		"path": "/openapi.json",
+	})
 	router.HandleFunc("/openapi.json", func(writer http.ResponseWriter, request *http.Request) {
 		writer.Header().Set("content-type", "application/json")
 		writer.WriteHeader(200)
@@ -31,11 +37,32 @@ func RunAfter(p diary.IPage) {
 	})
 
 	// serve api javascript client
+	p.Info("bind.client", diary.M{
+		"path": "/client.js",
+	})
 	router.HandleFunc("/client.js", func(writer http.ResponseWriter, request *http.Request) {
 		writer.Header().Set("content-type", "application/json")
 		writer.WriteHeader(200)
 		writer.Write(MustAsset("client.js"))
 	})
+
+	for topic, binding := range bindings {
+		p.Scope("bind.http", func(s diary.IPage) {
+			s.Info("data", diary.M{
+				"method": binding.Method,
+				"path": binding.Path,
+			})
+			router.HandleFunc(binding.Path, bindHandler(
+				s,
+				binding.Timeout,
+				topic,
+				binding.Extract,
+				binding.ConvertRequest,
+				binding.ConvertResponse,
+				binding.Permissions...
+			)).Methods(binding.Method)
+		})
+	}
 
 	// todo: /health endpoint
 	// todo: /address/search endpoint
@@ -49,13 +76,15 @@ func RunAfter(p diary.IPage) {
 
 	// todo: bind all entity endpoints
 
-	if !disableTls {
-		if err := http.ListenAndServeTLS(":"+ port, tlsCert, tlsKey, &CorsMiddleware{ router, origin }); err != nil {
-			panic(err)
+	go func() {
+		if !disableTls {
+			if err := http.ListenAndServeTLS(":"+port, tlsCert, tlsKey, &CorsMiddleware{router, origin}); err != nil {
+				panic(err)
+			}
+		} else {
+			if err := http.ListenAndServe(":"+port, &CorsMiddleware{router, origin}); err != nil {
+				panic(err)
+			}
 		}
-	} else {
-		if err := http.ListenAndServe(":"+ port, &CorsMiddleware{ router, origin }); err != nil {
-			panic(err)
-		}
-	}
+	}()
 }
