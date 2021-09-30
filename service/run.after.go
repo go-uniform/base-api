@@ -66,8 +66,6 @@ func RunAfter(p diary.IPage) {
 		}
 	}
 
-	// todo: /health endpoint
-	// todo: /address/search endpoint
 	// todo: /auth/login endpoint
 	// todo: /auth/login/code-resend endpoint
 	// todo: /auth/login/code-validate endpoint

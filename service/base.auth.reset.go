@@ -1,18 +1,43 @@
 package service
 
 import (
-	"github.com/go-diary/diary"
-	"github.com/go-uniform/uniform"
+	"net/http"
 )
 
-func init() {
-	subscribe(local("action.auth.reset"), authReset)
-}
+const TopicAuthReset = "auth.reset"
 
-func authReset(r uniform.IRequest, p diary.IPage) {
-	if err := p.Scope("auth.reset", func(s diary.IPage) {
-		authRequest("reset", r, s)
-	}); err != nil {
-		panic(err)
-	}
+func init() {
+	bind(TopicAuthReset, http.MethodPost, "/auth/reset", nil, func(request M) M {
+		// todo: use uniform validator to validate fields
+		// validator := uniform.NewValidator()
+		for key, value := range request {
+			switch key {
+			default:
+				// validator.Error(key, "Unexpected field")
+				break
+			case "type":
+				if value == "" {
+					// validator.Error("type", "May not be empty")
+				}
+				break
+			case "identifier":
+				if value == "" {
+					// validator.Error("identifier", "May not be empty")
+				}
+				break
+			case "method":
+				if value == "" {
+					// validator.Error("method", "May not be empty")
+				}
+				break
+			case "channel":
+				if value == "" {
+					// validator.Error("channel", "May not be empty")
+				}
+				break
+			}
+		}
+		// validator.Check()
+		return request
+	}, nil)
 }

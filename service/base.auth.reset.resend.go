@@ -1,18 +1,28 @@
 package service
 
 import (
-	"github.com/go-diary/diary"
-	"github.com/go-uniform/uniform"
+	"net/http"
 )
 
-func init() {
-	subscribe(local("action.auth.reset.resend"), authResetResend)
-}
+const AuthResetResend = "auth.reset.resend"
 
-func authResetResend(r uniform.IRequest, p diary.IPage) {
-	if err := p.Scope("auth.reset.resend", func(s diary.IPage) {
-		authRequest("reset.resend", r, s)
-	}); err != nil {
-		panic(err)
-	}
+func init() {
+	bind(AuthResetResend, http.MethodPost, "/auth/reset/{id}/resend", extractIdPathParameter, func(request M) M {
+		// todo: use uniform validator to validate fields
+		// validator := uniform.NewValidator()
+		for key, value := range request {
+			switch key {
+			default:
+				// validator.Error(key, "Unexpected field")
+				break
+			case "request-id":
+				if value == "" {
+					// validator.Error("request-id", "May not be empty")
+				}
+				break
+			}
+		}
+		// validator.Check()
+		return request
+	}, nil)
 }

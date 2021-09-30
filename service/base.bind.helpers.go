@@ -24,8 +24,8 @@ func extractToken(r *http.Request) string {
 	return authorization[7:]
 }
 
-func extractIdPathParameter(r *http.Request) (map[string]string, error) {
-	return map[string]string{ "id": mux.Vars(r)["id"] }, nil
+func extractIdPathParameter(r *http.Request) P {
+	return P{ "id": mux.Vars(r)["id"] }
 }
 
 func verifyToken(p diary.IPage, token string, r *http.Request) jwt.MapClaims {

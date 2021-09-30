@@ -1,18 +1,38 @@
 package service
 
 import (
-	"github.com/go-diary/diary"
-	"github.com/go-uniform/uniform"
+	"net/http"
 )
 
-func init() {
-	subscribe(local("action.auth.login"), authLogin)
-}
+const TopicAuthLogin = "auth.login"
 
-func authLogin(r uniform.IRequest, p diary.IPage) {
-	if err := p.Scope("auth.login", func(s diary.IPage) {
-		authRequest("login", r, s)
-	}); err != nil {
-		panic(err)
-	}
+func init() {
+	bind(TopicAuthLogin, http.MethodPost, "/auth/login", nil, func(request M) M {
+		// todo: use uniform validator to validate fields
+		// validator := uniform.NewValidator()
+		for key, value := range request {
+			switch key {
+			default:
+				// validator.Error(key, "Unexpected field")
+				break
+			case "type":
+				if value == "" {
+					// validator.Error("type", "May not be empty")
+				}
+				break
+			case "identifier":
+				if value == "" {
+					// validator.Error("identifier", "May not be empty")
+				}
+				break
+			case "password":
+				if value == "" {
+					// validator.Error("password", "May not be empty")
+				}
+				break
+			}
+		}
+		// validator.Check()
+		return request
+	}, nil)
 }
