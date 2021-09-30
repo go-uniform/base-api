@@ -21,7 +21,7 @@ func RunAfter(p diary.IPage) {
 		"path": "/",
 	})
 	router.HandleFunc("/", func(writer http.ResponseWriter, request *http.Request) {
-		writer.Header().Set("content-type", "text/html")
+		writer.Header().Set("Content-Type", "text/html")
 		writer.WriteHeader(200)
 		writer.Write(MustAsset("api.html"))
 	})
@@ -31,7 +31,7 @@ func RunAfter(p diary.IPage) {
 		"path": "/openapi.json",
 	})
 	router.HandleFunc("/openapi.json", func(writer http.ResponseWriter, request *http.Request) {
-		writer.Header().Set("content-type", "application/json")
+		writer.Header().Set("Content-Type", "application/json")
 		writer.WriteHeader(200)
 		writer.Write(MustAsset("openapi.json"))
 	})
@@ -41,7 +41,7 @@ func RunAfter(p diary.IPage) {
 		"path": "/client.js",
 	})
 	router.HandleFunc("/client.js", func(writer http.ResponseWriter, request *http.Request) {
-		writer.Header().Set("content-type", "application/json")
+		writer.Header().Set("Content-Type", "application/json")
 		writer.WriteHeader(200)
 		writer.Write(MustAsset("client.js"))
 	})
@@ -57,7 +57,7 @@ func RunAfter(p diary.IPage) {
 				binding.Timeout,
 				topic,
 				binding.Extract,
-				binding.ConvertRequest,
+				binding.ValidateRequest,
 				binding.ConvertResponse,
 				binding.Permissions...
 			)).Methods(binding.Method)
