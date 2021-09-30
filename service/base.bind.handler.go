@@ -228,7 +228,7 @@ var checkBasicPermissions = func(r *http.Request, claims jwt.MapClaims, paramete
 // extract: extract and validate path and query parameters using custom extract routine
 func bindHandler(s diary.IPage, timeout time.Duration, topic string, extract func(r *http.Request) P, validateRequest func(data M) M, convertResponse func(response interface{}) []byte, permissions ...string) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
-		if err := s.Scope(fmt.Sprintf("%s.%s", AppName, topic), func(p diary.IPage) {
+		if err := s.Scope(local(topic), func(p diary.IPage) {
 			defer func() {
 				if e := recover(); e != nil {
 					// todo: handle custom uniform alert errors, or write generic error message and panic upstream

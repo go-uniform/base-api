@@ -23,7 +23,7 @@ func RunAfter(p diary.IPage) {
 	router.HandleFunc("/", func(writer http.ResponseWriter, request *http.Request) {
 		writer.Header().Set("Content-Type", "text/html")
 		writer.WriteHeader(200)
-		writer.Write(MustAsset("api.html"))
+		_, _ = writer.Write(MustAsset("api.html"))
 	})
 
 	// serve openapi.json specification file
@@ -33,7 +33,7 @@ func RunAfter(p diary.IPage) {
 	router.HandleFunc("/openapi.json", func(writer http.ResponseWriter, request *http.Request) {
 		writer.Header().Set("Content-Type", "application/json")
 		writer.WriteHeader(200)
-		writer.Write(MustAsset("openapi.json"))
+		_, _ = writer.Write(MustAsset("openapi.json"))
 	})
 
 	// serve api javascript client
@@ -43,11 +43,11 @@ func RunAfter(p diary.IPage) {
 	router.HandleFunc("/client.js", func(writer http.ResponseWriter, request *http.Request) {
 		writer.Header().Set("Content-Type", "application/json")
 		writer.WriteHeader(200)
-		writer.Write(MustAsset("client.js"))
+		_, _ = writer.Write(MustAsset("client.js"))
 	})
 
 	for topic, binding := range bindings {
-		p.Scope("bind.http", func(s diary.IPage) {
+		if err := p.Scope("bind.http", func(s diary.IPage) {
 			s.Info("data", diary.M{
 				"method": binding.Method,
 				"path": binding.Path,
@@ -61,7 +61,9 @@ func RunAfter(p diary.IPage) {
 				binding.ConvertResponse,
 				binding.Permissions...
 			)).Methods(binding.Method)
-		})
+		}); err != nil {
+			panic(err)
+		}
 	}
 
 	// todo: /health endpoint
