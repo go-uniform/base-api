@@ -44,7 +44,7 @@ func compileNatsOptions() []nats.Option {
 			panic(err)
 		}
 		config := &tls.Config{
-			// since NATS backbone for Fluid will always be on a private line we must skip host verification step
+			// since NATS backbone should always be on a private line with self-signed certs, we just skip host verification
 			InsecureSkipVerify: true,
 
 			Certificates: []tls.Certificate{cert},

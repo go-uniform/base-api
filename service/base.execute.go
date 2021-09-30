@@ -37,7 +37,6 @@ func Execute(limit int, test bool, natsUri string, natsOptions []nats.Option, ar
 		panic(err)
 	}
 
-	// Close connection
 	defer c.Close()
 
 	d.Page(-1, traceRate, true, AppName, nil, "", "", nil, func(p diary.IPage) {
@@ -143,14 +142,6 @@ func Execute(limit int, test bool, natsUri string, natsOptions []nats.Option, ar
 		}
 
 		p.Notice("drain", nil)
-		// Drain connection (Preferred for responders)
-		// Close() not needed if this is called.
-		if err := c.Drain(); err != nil {
-			// this error might not reach the diary.write topic listener since we are busy shutting down service
-			// do not expect to see this message in the diary logs
-			p.Error("drain", "failed to drain connection", diary.M{
-				"error": err,
-			})
-		}
+		_ = c.Drain()
 	})
 }

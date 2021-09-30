@@ -25,7 +25,6 @@ func Command(cmd, natsUri string, natsOptions []nats.Option, args map[string]str
 		panic(err)
 	}
 
-	// Close connection
 	defer c.Close()
 
 	d.Page(-1, traceRate, true, AppName, nil, "", "", nil, func(p diary.IPage) {
@@ -37,6 +36,5 @@ func Command(cmd, natsUri string, natsOptions []nats.Option, args map[string]str
 		}
 	})
 
-	// Drain connection
 	_ = c.Drain()
 }

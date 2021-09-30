@@ -27,7 +27,6 @@ func Output(natsUri, command string, timeout time.Duration, vars interface{}) {
 		panic(err)
 	}
 
-	// Close connection
 	defer c.Close()
 
 	d = diary.Dear(AppClient, AppProject, AppName, nil, AppRepository, AppCommit, []string{ AppVersion }, nil, diary.LevelFatal, nil)
@@ -46,6 +45,5 @@ func Output(natsUri, command string, timeout time.Duration, vars interface{}) {
 		}
 	})
 
-	// Drain connection
 	_ = c.Drain()
 }
