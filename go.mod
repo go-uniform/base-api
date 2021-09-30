@@ -1,6 +1,6 @@
 module service
 
-go 1.14
+go 1.15
 
 require (
 	github.com/aws/aws-sdk-go v1.40.22 // indirect
@@ -18,8 +18,10 @@ require (
 	github.com/xdg/stringprep v1.0.3 // indirect
 	github.com/xuri/excelize/v2 v2.4.1
 	github.com/youmark/pkcs8 v0.0.0-20201027041543-1326539a0a0a // indirect
-	go.mongodb.org/mongo-driver v1.7.1 // indirect
-	golang.org/x/crypto v0.0.0-20210813211128-0a44fdfbc16e // indirect
+	go.etcd.io/bbolt v1.3.2 // indirect
+	go.mongodb.org/mongo-driver v1.7.2 // indirect
+	golang.org/x/crypto v0.0.0-20210921155107-089bfa567519 // indirect
 	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c // indirect
 	golang.org/x/text v0.3.7 // indirect
+	gopkg.in/resty.v1 v1.12.0 // indirect
 )

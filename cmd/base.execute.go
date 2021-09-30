@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"crypto/tls"
 	"fmt"
 	"github.com/nats-io/go-nats"
 	"github.com/spf13/cobra"
@@ -34,25 +33,6 @@ func init() {
 	rootCmd.PersistentFlags().StringVarP(&natsCert, "nats-cert", "", "/etc/ssl/certs/ssl-bundle.crt", "The nats cluster TLS certificate file path")
 	rootCmd.PersistentFlags().StringVarP(&natsKey, "nats-key", "", "/etc/ssl/private/ssl.key", "The nats cluster TLS key file path")
 	rootCmd.PersistentFlags().BoolVar(&disableTls, "disable-tls", false, "A flag indicating if service should disable tls encryption")
-}
-
-func compileNatsOptions() []nats.Option {
-	var natsOptions = make([]nats.Option, 0)
-	if !disableTls {
-		cert, err := tls.LoadX509KeyPair(natsCert, natsKey)
-		if err != nil {
-			panic(err)
-		}
-		config := &tls.Config{
-			// since NATS backbone should always be on a private line with self-signed certs, we just skip host verification
-			InsecureSkipVerify: true,
-
-			Certificates: []tls.Certificate{cert},
-			MinVersion:   tls.VersionTLS12,
-		}
-		natsOptions = append(natsOptions, nats.Secure(config))
-	}
-	return natsOptions
 }
 
 func Execute() {
