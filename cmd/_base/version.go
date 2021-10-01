@@ -3,7 +3,7 @@ package _base
 import (
 	"fmt"
 	"github.com/spf13/cobra"
-	service "service/service/_base"
+	"service/service"
 )
 
 var VersionCmd = &cobra.Command{

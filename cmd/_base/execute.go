@@ -5,7 +5,7 @@ import (
 	"github.com/nats-io/go-nats"
 	"github.com/spf13/cobra"
 	"os"
-	service "service/service/_base"
+	"service/service"
 )
 
 var NatsUri string

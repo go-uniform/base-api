@@ -3,7 +3,7 @@ package cmd
 import (
 	"github.com/spf13/cobra"
 	"service/cmd/_base"
-	service "service/service/_base"
+	"service/service"
 )
 
 func init() {
@@ -22,8 +22,7 @@ func init() {
 		Short: "Run " + service.AppName + " service",
 		Long:  "Run " + service.AppName + " service",
 		Run: func(cmd *cobra.Command, args []string) {
-			service.InitializeDiary(test, level, rate)
-			service.Execute(limit, test, _base.NatsUri, _base.CompileNatsOptions(), service.M{
+			service.Execute(level, rate, limit, test, _base.NatsUri, _base.CompileNatsOptions(), service.M{
 				"port": port,
 				"tlsCert": tlsCert,
 				"tlsKey": tlsKey,

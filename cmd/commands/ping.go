@@ -7,12 +7,12 @@ This is just an example command for reference
 import (
 	"github.com/spf13/cobra"
 	"service/cmd/_base"
-	service "service/service/_base"
+	"service/service"
 	"time"
 )
 
 func init() {
-	pingCmd := _base.Command("ping", func(cmd *cobra.Command, args []string) {
+	cmd := _base.Command("ping", func(cmd *cobra.Command, args []string) {
 		service.Command("ping", time.Second, _base.NatsUri, _base.CompileNatsOptions(), map[string]string{
 			// todo: link custom flags to arg values here, example: "custom": custom,
 		}, func(data []byte) {
@@ -22,5 +22,5 @@ func init() {
 
 	// todo: add custom CLI flags here
 
-	_base.RootCmd.AddCommand(pingCmd)
+	_base.RootCmd.AddCommand(cmd)
 }

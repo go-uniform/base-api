@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"github.com/nats-io/go-nats"
 	"github.com/spf13/cobra"
-	service "service/service/_base"
+	"service/service"
 )
 
 func CompileNatsOptions() []nats.Option {

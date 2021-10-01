@@ -7,7 +7,7 @@ This is just an example routine for reference
 import (
 	"github.com/go-diary/diary"
 	"github.com/go-uniform/uniform"
-	"service/service/base"
+	"service/service/_base"
 )
 
 func init() {
