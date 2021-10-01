@@ -1,8 +1,9 @@
-package service
+package _base
 
 import (
 	"fmt"
 	"github.com/go-diary/diary"
+	"service/service"
 	"strings"
 )
 
@@ -20,5 +21,5 @@ func InitializeDiary(test bool, level string, rate int) {
 	}
 	traceRate = rate
 
-	d = diary.Dear(AppClient, AppProject, AppName, nil, AppRepository, AppCommit, []string{ AppVersion }, nil, lvl, handler)
+	d = diary.Dear(service.AppClient, service.AppProject, AppName, nil, AppRepository, AppCommit, []string{AppVersion }, nil, lvl, handler)
 }

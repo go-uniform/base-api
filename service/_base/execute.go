@@ -1,4 +1,4 @@
-package service
+package _base
 
 import (
 	"fmt"
@@ -9,6 +9,7 @@ import (
 	"os/signal"
 	"reflect"
 	"runtime"
+	"service/service"
 	"strings"
 	"syscall"
 	"time"
@@ -42,7 +43,7 @@ func Execute(limit int, test bool, natsUri string, natsOptions []nats.Option, ar
 	d.Page(-1, traceRate, true, AppName, nil, "", "", nil, func(p diary.IPage) {
 		// service custom run routine before subscribing actions
 		if err := p.Scope("run.before", func(p diary.IPage) {
-			RunBefore(p)
+			service.RunBefore(p)
 		}); err != nil {
 			panic(err)
 		}
@@ -50,16 +51,16 @@ func Execute(limit int, test bool, natsUri string, natsOptions []nats.Option, ar
 		// subscribe all actions [generic]
 		for topic, handler := range actions {
 			p.Info(fmt.Sprintf("subscribe.%s", topic), diary.M{
-				"project": AppProject,
+				"project": service.AppProject,
 				"topic":   topic,
 				"handler": runtime.FuncForPC(reflect.ValueOf(handler).Pointer()).Name(),
 			})
-			subscription, err := c.QueueSubscribe(rateLimit, topic, AppService, handler)
+			subscription, err := c.QueueSubscribe(rateLimit, topic, service.AppService, handler)
 			if err != nil {
 				p.Error("subscribe", "failed to subscribe for topic", diary.M{
-					"project": AppProject,
-					"topic": topic,
-					"error": err,
+					"project": service.AppProject,
+					"topic":   topic,
+					"error":   err,
 				})
 			}
 			subscriptions[topic] = subscription
@@ -67,23 +68,23 @@ func Execute(limit int, test bool, natsUri string, natsOptions []nats.Option, ar
 
 		// subscribe all actions [service specific]
 		for topic, handler := range actions {
-			if !strings.HasPrefix(topic, AppService + ".") {
+			if !strings.HasPrefix(topic, service.AppService+ ".") {
 				// skip all non-routine topics
 				continue
 			}
 
 			topic = fmt.Sprintf("%s.%s", AppName, topic)
 			p.Info(fmt.Sprintf("subscribe.%s", topic), diary.M{
-				"project": AppProject,
+				"project": service.AppProject,
 				"topic":   topic,
 				"handler": runtime.FuncForPC(reflect.ValueOf(handler).Pointer()).Name(),
 			})
-			subscription, err := c.QueueSubscribe(rateLimit, topic, AppService, handler)
+			subscription, err := c.QueueSubscribe(rateLimit, topic, service.AppService, handler)
 			if err != nil {
 				p.Error("subscribe", "failed to subscribe for topic", diary.M{
-					"project": AppProject,
-					"topic": topic,
-					"error": err,
+					"project": service.AppProject,
+					"topic":   topic,
+					"error":   err,
 				})
 			}
 			subscriptions[topic] = subscription
@@ -91,7 +92,7 @@ func Execute(limit int, test bool, natsUri string, natsOptions []nats.Option, ar
 
 		// service custom run routine after subscribing actions
 		if err := p.Scope("run.after", func(p diary.IPage) {
-			RunAfter(p)
+			service.RunAfter(p)
 		}); err != nil {
 			panic(err)
 		}

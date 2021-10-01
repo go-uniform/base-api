@@ -1,0 +1,2 @@
+Add the logic for your custom command-line-interface (CLI) interactions here for things like master data setup, cronjob routines, etc.
+A command exposes a service function to be called via CLI for execution.

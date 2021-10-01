@@ -1,13 +1,14 @@
-package service
+package _base
 
 import (
 	"fmt"
 	"github.com/go-diary/diary"
 	"github.com/go-uniform/uniform"
 	"github.com/nats-io/go-nats"
+	"time"
 )
 
-func Command(cmd, natsUri string, natsOptions []nats.Option, args map[string]string) {
+func Command(cmd string, timeout time.Duration, natsUri string, natsOptions []nats.Option, args map[string]string, responseHandler func([]byte)) {
 	defer func() {
 		if r := recover(); r != nil {
 			if _, e := fmt.Printf("%v", r); e != nil {
@@ -28,9 +29,14 @@ func Command(cmd, natsUri string, natsOptions []nats.Option, args map[string]str
 	defer c.Close()
 
 	d.Page(-1, traceRate, true, AppName, nil, "", "", nil, func(p diary.IPage) {
-		p.Info(cmd, nil)
-		if err := c.Publish(p, local(command(cmd)), uniform.Request{
+		if err := c.Request(p, TargetCommand(cmd), timeout, uniform.Request{
 			Parameters: args,
+		}, func(r uniform.IRequest, p diary.IPage) {
+			if responseHandler != nil {
+				var data []byte
+				r.Read(&data)
+				responseHandler(data)
+			}
 		}); err != nil {
 			panic(err)
 		}

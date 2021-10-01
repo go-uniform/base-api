@@ -1,0 +1,2 @@
+Add the logic for your custom Pub/Sub service interactions here to trigger service event, like sms.received or mongo.inserted.administrators
+An event is triggered to notify all potentially listening services of it occurrence.

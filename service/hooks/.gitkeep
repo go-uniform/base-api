@@ -1,0 +1,2 @@
+Add your custom event listener logic here to respond to a given event accordingly, like sms.received or mongo.inserted.administrators
+A hook listens for given events to be triggered.
