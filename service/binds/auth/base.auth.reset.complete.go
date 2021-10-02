@@ -1,14 +1,15 @@
 package auth
 
 import (
+	"github.com/go-uniform/uniform"
 	"net/http"
-	"service/service"
+	"service/service/_base"
 )
 
 const TopicAuthResetComplete = "auth.reset.complete"
 
 func init() {
-	service.bind(TopicAuthResetComplete, http.MethodPost, "/auth/reset/complete", nil, func(request service.M) service.M {
+	_base.Bind(TopicAuthResetComplete, http.MethodPost, "/auth/reset/complete", nil, func(request uniform.M) uniform.M {
 		// todo: use uniform validator to validate fields
 		// validator := uniform.NewValidator()
 		for key, value := range request {

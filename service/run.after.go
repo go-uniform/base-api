@@ -48,13 +48,13 @@ func RunAfter(p diary.IPage) {
 		_, _ = writer.Write(info.MustAsset("client.js"))
 	})
 
-	for topic, binding := range _base.bindings {
+	for topic, binding := range _base.Bindings {
 		if err := p.Scope("bind.http", func(s diary.IPage) {
 			s.Info("data", diary.M{
 				"method": binding.Method,
 				"path": binding.Path,
 			})
-			router.HandleFunc(binding.Path, _base.bindHandler(
+			router.HandleFunc(binding.Path, _base.BindHandler(
 				s,
 				binding.Timeout,
 				topic,

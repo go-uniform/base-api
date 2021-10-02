@@ -4,10 +4,11 @@ import (
 	"fmt"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/go-diary/diary"
+	"github.com/go-uniform/uniform"
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"
-	"service/service"
+	"service/service/info"
 	"strings"
 	"time"
 )
@@ -25,8 +26,8 @@ func extractToken(r *http.Request) string {
 	return authorization[7:]
 }
 
-func extractIdPathParameter(r *http.Request) P {
-	return P{ "id": mux.Vars(r)["id"] }
+func ExtractIdPathParameter(r *http.Request) uniform.P {
+	return uniform.P{ "id": mux.Vars(r)["id"] }
 }
 
 func verifyToken(p diary.IPage, token string, r *http.Request) jwt.MapClaims {
@@ -34,7 +35,7 @@ func verifyToken(p diary.IPage, token string, r *http.Request) jwt.MapClaims {
 		if _, ok := token.Method.(*jwt.SigningMethodRSA); !ok {
 			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
 		}
-		return service.rsaPublic, nil
+		return info.GetJwtPublicKey(), nil
 	})
 	if err != nil {
 		p.Warning("verify.jwt.parse", "unable to parse JWT", diary.M{
@@ -116,7 +117,7 @@ func checkPermissions(claims jwt.MapClaims, permissions ...string) (authorized b
 			continue
 		}
 
-		if contains(userPermissions, permission, false) {
+		if uniform.Contains(userPermissions, permission, false) {
 			return !inverted, false
 		}
 	}

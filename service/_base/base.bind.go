@@ -2,18 +2,19 @@ package _base
 
 import (
 	"fmt"
+	"github.com/go-uniform/uniform"
 	"net/http"
 )
 
 // A private package level variable that contains all endpoint bindings
-var bindings = map[string]Bind{}
+var Bindings = map[string]bind{}
 
 // add a endpoint to the bindings map
-func bind(topic, method, path string, extract func(r *http.Request) P, validateRequest func(request M) M, convertResponse func(response interface{}) []byte, permissions ...string) {
-	if _, exists := bindings[topic]; exists {
+func Bind(topic, method, path string, extract func(r *http.Request) uniform.P, validateRequest func(request uniform.M) uniform.M, convertResponse func(response interface{}) []byte, permissions ...string) {
+	if _, exists := Bindings[topic]; exists {
 		panic(fmt.Sprintf("topic '%s' has already been subscribed", topic))
 	}
-	bindings[topic] = Bind{
+	Bindings[topic] = bind{
 		Method:          method,
 		Path:            path,
 		Extract:         extract,

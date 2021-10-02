@@ -1,14 +1,15 @@
 package auth
 
 import (
+	"github.com/go-uniform/uniform"
 	"net/http"
-	"service/service"
+	"service/service/_base"
 )
 
 const TopicAuthLoginCodeValidate = "auth.login.code-validate"
 
 func init() {
-	service.bind(TopicAuthLoginCodeValidate, http.MethodPost, "/auth/login/code-validate", nil, func(request service.M) service.M {
+	_base.Bind(TopicAuthLoginCodeValidate, http.MethodPost, "/auth/login/code-validate", nil, func(request uniform.M) uniform.M {
 		// todo: use uniform validator to validate fields
 		// validator := uniform.NewValidator()
 		for key, value := range request {

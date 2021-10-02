@@ -127,7 +127,7 @@ var getRequestBody = func(p diary.IPage, r *http.Request, validateRequest func(u
 	return requestBody
 }
 
-var checkBasicPermissions = func(r *http.Request, claims jwt.MapClaims, parameters P, requestBody M) bool {
+var checkBasicPermissions = func(r *http.Request, claims jwt.MapClaims, parameters uniform.P, requestBody uniform.M) bool {
 	// todo: we must be able to clean this up even more just need to think a bit
 	userId := fmt.Sprint(claims["id"])
 	filterMine := false
@@ -226,9 +226,9 @@ var checkBasicPermissions = func(r *http.Request, claims jwt.MapClaims, paramete
 }
 
 // extract: extract and validate path and query parameters using custom extract routine
-func bindHandler(s diary.IPage, timeout time.Duration, topic string, extract func(r *http.Request) P, validateRequest func(data M) M, convertResponse func(response interface{}) []byte, permissions ...string) func(w http.ResponseWriter, r *http.Request) {
+func BindHandler(s diary.IPage, timeout time.Duration, topic string, extract func(r *http.Request) uniform.P, validateRequest func(data uniform.M) uniform.M, convertResponse func(response interface{}) []byte, permissions ...string) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
-		if err := s.Scope(local(topic), func(p diary.IPage) {
+		if err := s.Scope(TargetLocal(topic), func(p diary.IPage) {
 			defer func() {
 				if e := recover(); e != nil {
 					// todo: handle custom uniform alert errors, or write generic error message and panic upstream
@@ -295,7 +295,7 @@ func bindHandler(s diary.IPage, timeout time.Duration, topic string, extract fun
 				allow := false
 
 				var response interface{}
-				if err := c.Request(p, local("permissions.check"), timeout, uniform.Request{
+				if err := c.Request(p, TargetLocal("permissions.check"), timeout, uniform.Request{
 					Parameters: parameters,
 					Model: map[string]interface{}{
 						"method": r.Method,
@@ -317,7 +317,7 @@ func bindHandler(s diary.IPage, timeout time.Duration, topic string, extract fun
 						"path":  r.URL.RequestURI(),
 						"errorMsg": err.Error(),
 						"error":    err,
-						"topic": local("permissions.check"),
+						"topic": TargetLocal("permissions.check"),
 					})
 					uniform.Alert(500, "Failed to execute deep permissions check")
 				}

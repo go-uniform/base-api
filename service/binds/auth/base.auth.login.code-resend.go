@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"github.com/go-uniform/uniform"
 	"net/http"
 	"service/service/_base"
 )
@@ -8,7 +9,7 @@ import (
 const TopicAuthLoginCodeResend = "auth.login.code-resend"
 
 func init() {
-	_base.bind(TopicAuthLoginCodeResend, http.MethodPost, "/auth/login/code-resend", nil, func(request _base.M) _base.M {
+	_base.Bind(TopicAuthLoginCodeResend, http.MethodPost, "/auth/login/code-resend", nil, func(request uniform.M) uniform.M {
 		// todo: use uniform validator to validate fields
 		// validator := uniform.NewValidator()
 		for key, value := range request {

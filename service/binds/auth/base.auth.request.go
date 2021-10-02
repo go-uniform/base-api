@@ -4,15 +4,15 @@ import (
 	"fmt"
 	"github.com/go-diary/diary"
 	"github.com/go-uniform/uniform"
-	"service/service"
+	"service/service/info"
 	"strings"
 )
 
 func authRequest(action string, r uniform.IRequest, p diary.IPage) {
-	var response service.M
+	var response uniform.M
 	if err := r.Conn().Request(p, fmt.Sprintf("auth.%s", strings.TrimPrefix(action, "auth.")), r.Remainder(), uniform.Request{
-		Model: service.M{
-			"group": AppProject,
+		Model: uniform.M{
+			"group": info.AppProject,
 		},
 	}, func(r uniform.IRequest, p diary.IPage) {
 		if r.HasError() {
