@@ -1,13 +1,14 @@
-package service
+package auth
 
 import (
 	"net/http"
+	"service/service"
 )
 
-const TopicAuthLoginCodeResend = "auth.login.code-resend"
+const AuthResetValidate = "auth.reset.validate"
 
 func init() {
-	bind(TopicAuthLoginCodeResend, http.MethodPost, "/auth/login/code-resend", nil, func(request M) M {
+	service.bind(AuthResetValidate, http.MethodPost, "/auth/reset/{id}/validate", service.extractIdPathParameter, func(request service.M) service.M {
 		// todo: use uniform validator to validate fields
 		// validator := uniform.NewValidator()
 		for key, value := range request {
@@ -15,9 +16,9 @@ func init() {
 			default:
 				// validator.Error(key, "Unexpected field")
 				break
-			case "token":
+			case "code":
 				if value == "" {
-					// validator.Error("token", "May not be empty")
+					// validator.Error("code", "May not be empty")
 				}
 				break
 			}

@@ -1,13 +1,14 @@
-package service
+package auth
 
 import (
 	"net/http"
+	"service/service"
 )
 
 const TopicAuthLoginCodeValidate = "auth.login.code-validate"
 
 func init() {
-	bind(TopicAuthLoginCodeValidate, http.MethodPost, "/auth/login/code-validate", nil, func(request M) M {
+	service.bind(TopicAuthLoginCodeValidate, http.MethodPost, "/auth/login/code-validate", nil, func(request service.M) service.M {
 		// todo: use uniform validator to validate fields
 		// validator := uniform.NewValidator()
 		for key, value := range request {

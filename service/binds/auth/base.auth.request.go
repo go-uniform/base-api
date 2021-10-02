@@ -1,16 +1,17 @@
-package service
+package auth
 
 import (
 	"fmt"
 	"github.com/go-diary/diary"
 	"github.com/go-uniform/uniform"
+	"service/service"
 	"strings"
 )
 
 func authRequest(action string, r uniform.IRequest, p diary.IPage) {
-	var response M
+	var response service.M
 	if err := r.Conn().Request(p, fmt.Sprintf("auth.%s", strings.TrimPrefix(action, "auth.")), r.Remainder(), uniform.Request{
-		Model: M{
+		Model: service.M{
 			"group": AppProject,
 		},
 	}, func(r uniform.IRequest, p diary.IPage) {

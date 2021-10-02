@@ -1,13 +1,14 @@
-package service
+package auth
 
 import (
 	"net/http"
+	"service/service"
 )
 
 const TopicAuthReset = "auth.reset"
 
 func init() {
-	bind(TopicAuthReset, http.MethodPost, "/auth/reset", nil, func(request M) M {
+	service.bind(TopicAuthReset, http.MethodPost, "/auth/reset", nil, func(request service.M) service.M {
 		// todo: use uniform validator to validate fields
 		// validator := uniform.NewValidator()
 		for key, value := range request {

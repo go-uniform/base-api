@@ -1,13 +1,14 @@
-package service
+package auth
 
 import (
 	"net/http"
+	"service/service"
 )
 
-const TopicAuthLogin = "auth.login"
+const TopicAuthResetComplete = "auth.reset.complete"
 
 func init() {
-	bind(TopicAuthLogin, http.MethodPost, "/auth/login", nil, func(request M) M {
+	service.bind(TopicAuthResetComplete, http.MethodPost, "/auth/reset/complete", nil, func(request service.M) service.M {
 		// todo: use uniform validator to validate fields
 		// validator := uniform.NewValidator()
 		for key, value := range request {
@@ -20,9 +21,9 @@ func init() {
 					// validator.Error("type", "May not be empty")
 				}
 				break
-			case "identifier":
+			case "token":
 				if value == "" {
-					// validator.Error("identifier", "May not be empty")
+					// validator.Error("token", "May not be empty")
 				}
 				break
 			case "password":
