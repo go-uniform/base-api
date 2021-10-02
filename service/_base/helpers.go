@@ -8,22 +8,40 @@ import (
 
 // use this to separate project specific logic from non-specific logic
 var TargetLocal = func(topic string) string {
+	if topic == "" {
+		return AppProject
+	}
 	return fmt.Sprintf("%s.%s", AppProject, strings.TrimPrefix(topic, AppProject+ "."))
 }
 
 // use this to target a topic for system specific action
 var TargetSystem = func(topic string) string {
-	return TargetLocal(fmt.Sprintf("action.system.%s", topic))
+	if topic == "" {
+		return "system"
+	}
+	return fmt.Sprintf("system.%s", strings.TrimPrefix(topic, "system."))
 }
 
 // use this to target a topic for a specific entity item action
 var TargetItem = func(entity, action string) string {
-	return TargetLocal(fmt.Sprintf("action.%s.item.%s", entity, action))
+	if entity == "" {
+		return TargetLocal("item")
+	}
+	if action == "" {
+		return TargetLocal(fmt.Sprintf("item.%s", entity))
+	}
+	return TargetLocal(fmt.Sprintf("item.%s.%s", entity, action))
 }
 
 // use this to target a topic for a specific entity group action
 var TargetList = func(entity, action string) string {
-	return TargetLocal(fmt.Sprintf("action.%s.list.%s", entity, action))
+	if entity == "" {
+		return TargetLocal("list")
+	}
+	if action == "" {
+		return TargetLocal(fmt.Sprintf("list.%s", entity))
+	}
+	return TargetLocal(fmt.Sprintf("list.%s.%s", entity, action))
 }
 
 // use this to target a topic for a cli level command
@@ -33,12 +51,18 @@ var TargetCommand = func(topic string) string {
 
 // use this to target a service topic for event driven behaviours
 var TargetEvent = func(service, event string) string {
+	if service == "" {
+		return "event"
+	}
+	if event == "" {
+		return fmt.Sprintf("event.%s", service)
+	}
 	return fmt.Sprintf("event.%s.%s", service, event)
 }
 
 // use this to target a topic for a function that the service exposes
-var TargetRoutine = func(function string) string {
-	return fmt.Sprintf("%s.%s", AppService, strings.TrimPrefix(function, AppService+ "."))
+var TargetAction = func(action string) string {
+	return fmt.Sprintf("action.%s.%s", AppService, action)
 }
 
 // add a topic/handler combination to the actions map

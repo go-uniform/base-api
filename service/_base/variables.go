@@ -6,7 +6,7 @@ import (
 )
 
 // A private package level variable that contains the service's run-time arguments
-var args M
+var args uniform.M
 
 // A private package level variable that contains the running diary instance
 var d diary.IDiary

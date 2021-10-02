@@ -14,7 +14,7 @@ import (
 	"time"
 )
 
-func Execute(limit int, test bool, natsUri string, natsOptions []nats.Option, argsMap M, runBefore func(p diary.IPage), runAfter func(p diary.IPage), ) {
+func Execute(limit int, test bool, natsUri string, natsOptions []nats.Option, argsMap uniform.M, runBefore func(p diary.IPage), runAfter func(p diary.IPage), ) {
 	rateLimit := time.Nanosecond
 	if limit > 0 && limit < 1000000 {
 		rateLimit = time.Second / time.Duration(limit)
@@ -22,7 +22,7 @@ func Execute(limit int, test bool, natsUri string, natsOptions []nats.Option, ar
 
 	testMode = test
 
-	args = M{}
+	args = uniform.M{}
 	if argsMap != nil {
 		args = argsMap
 	}

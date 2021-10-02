@@ -11,7 +11,7 @@ import (
 )
 
 func init() {
-	_base.Subscribe(_base.TargetRoutine("ping"), ping)
+	_base.Subscribe(_base.TargetAction("ping"), ping)
 }
 
 func ping(r uniform.IRequest, p diary.IPage) {

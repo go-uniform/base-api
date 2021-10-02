@@ -8,12 +8,14 @@ import (
 	"service/service/hooks"
 )
 
+var MustAsset = _base.MustAsset
+
 // load all actions, commands, events and hooks
 func init() {
-	actions.Load()
-	commands.Load()
-	events.Load()
-	hooks.Load()
+	actions.Load(args, _base.MustAsset)
+	commands.Load(args, _base.MustAsset)
+	events.Load(args, _base.MustAsset)
+	hooks.Load(args, _base.MustAsset)
 	_base.AppClient = AppClient
 	_base.AppProject = AppProject
 	_base.AppService = AppService
