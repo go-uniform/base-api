@@ -7,11 +7,12 @@ import (
 	"github.com/go-diary/diary"
 	"io/ioutil"
 	"service/service/info"
+	"sync"
 )
 
 var rsaPublic *rsa.PublicKey
 
-func RunBefore(p diary.IPage) {
+func RunBefore(shutdown chan bool, group *sync.WaitGroup, p diary.IPage) {
 	data, err := ioutil.ReadFile(fmt.Sprint(info.Args["jwt"]))
 	if err != nil {
 		panic(err)

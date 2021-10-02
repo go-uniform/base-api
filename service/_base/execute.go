@@ -9,22 +9,24 @@ import (
 	"os/signal"
 	"reflect"
 	"runtime"
-	"service/cmd/_base"
 	"service/service/info"
 	"strings"
+	"sync"
 	"syscall"
 	"time"
 )
 
-func Execute(limit int, test bool, natsUri string, natsOptions []nats.Option, runBefore func(p diary.IPage), runAfter func(p diary.IPage), ) {
+func Execute(limit int, test bool, natsUri string, natsOptions []nats.Option, runBefore func(shutdown chan bool, group *sync.WaitGroup, p diary.IPage), runAfter func(shutdown chan bool, group *sync.WaitGroup, p diary.IPage), ) {
+	// set rate limiting duration using limit arg
 	rateLimit := time.Nanosecond
 	if limit > 0 && limit < 1000000 {
 		rateLimit = time.Second / time.Duration(limit)
 	}
 
+	// set global testMode flag based on test arg
 	testMode = test
 
-	info.Args["nats"] = natsUri
+	// connect to nats backbone
 	natsConn, err := nats.Connect(natsUri, natsOptions...)
 	if err != nil {
 		panic(err)
@@ -34,14 +36,20 @@ func Execute(limit int, test bool, natsUri string, natsOptions []nats.Option, ru
 		panic(err)
 	}
 
+	// on exit close the nats connection
 	defer c.Close()
 
 	d.Page(-1, traceRate, true, info.AppName, nil, "", "", nil, func(p diary.IPage) {
+		// a channel that will be closed when shutdown signal is received
+		shutdown := make(chan bool)
+		// a group used to check that all parallel running threads have been closed before shutdown routine starts
+		group := &sync.WaitGroup{}
+
 		p.Notice("startup", diary.M{
-			"nats": _base.NatsUri,
-			"natsCert": _base.NatsCert,
-			"natsKey": _base.NatsKey,
-			"disableTls": _base.DisableTls,
+			"nats": info.Args["nats"],
+			"natsCert": info.Args["natsCert"],
+			"natsKey": info.Args["natsKey"],
+			"disableTls": info.Args["disableTls"],
 			"lvl": info.Args["lvl"],
 			"rate": info.Args["rate"],
 			"limit": info.Args["limit"],
@@ -51,7 +59,7 @@ func Execute(limit int, test bool, natsUri string, natsOptions []nats.Option, ru
 		// service custom run routine before subscribing actions
 		p.Notice("run.before", nil)
 		if err := p.Scope("run.before", func(p diary.IPage) {
-			runBefore(p)
+			runBefore(shutdown, group, p)
 		}); err != nil {
 			panic(err)
 		}
@@ -102,7 +110,7 @@ func Execute(limit int, test bool, natsUri string, natsOptions []nats.Option, ru
 		// service custom run routine after subscribing actions
 		p.Notice("run.after", nil)
 		if err := p.Scope("run.after", func(p diary.IPage) {
-			runAfter(p)
+			runAfter(shutdown, group, p)
 		}); err != nil {
 			panic(err)
 		}
@@ -131,6 +139,9 @@ func Execute(limit int, test bool, natsUri string, natsOptions []nats.Option, ru
 		p.Notice("signal.received", diary.M{
 			"signal": sig,
 		})
+
+		// trigger shutdown to notify all other threads
+		p.Notice("shutdown", nil)
 
 		p.Notice("unsubscribe.all", diary.M{
 			"topics.actions": reflect.ValueOf(actions).MapKeys(),

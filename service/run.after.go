@@ -7,10 +7,10 @@ import (
 	"net/http"
 	"service/service/_base"
 	"service/service/info"
+	"sync"
 )
 
-func RunAfter(p diary.IPage) {
-	disableTls := info.Args["disableTls"].(bool)
+func RunAfter(shutdown chan bool, group *sync.WaitGroup, p diary.IPage) {	disableTls := info.Args["disableTls"].(bool)
 	port := fmt.Sprint(info.Args["port"])
 	tlsCert := fmt.Sprint(info.Args["tlsCert"])
 	tlsKey := fmt.Sprint(info.Args["tlsKey"])
