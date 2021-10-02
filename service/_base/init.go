@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/go-diary/diary"
 	"service/service/info"
+	"strings"
 )
 
 func InitializeNoDiary() {
@@ -24,10 +25,9 @@ func InitializeDiary(test bool, level string, rate int) {
 	}
 
 	lvl := diary.ConvertFromTextLevel(level)
-	// todo: fix diary bug first
-	//if !diary.IsValidLevel(lvl) {
-	//	panic(fmt.Sprintf("level must be one of the following values: %s", strings.Join(diary.TextLevels, ", ")))
-	//}
+	if !diary.IsValidLevel(lvl) {
+		panic(fmt.Sprintf("level must be one of the following values: %s", strings.Join(diary.TextLevels, ", ")))
+	}
 	traceRate = rate
 
 	d = diary.Dear(info.AppClient, info.AppProject, info.AppName, nil, info.AppRepository, info.AppCommit, []string{info.AppVersion}, nil, lvl, handler)
