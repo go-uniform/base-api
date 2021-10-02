@@ -1,0 +1,3 @@
+Add your custom entity structs here.
+
+If you want to add entities from other services we suggest creating a directory using the external service name for reference.
