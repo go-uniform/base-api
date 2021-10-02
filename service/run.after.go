@@ -1,6 +1,7 @@
 package service
 
 import (
+	"context"
 	"fmt"
 	"github.com/go-diary/diary"
 	"github.com/gorilla/mux"
@@ -19,7 +20,7 @@ func RunAfter(shutdown chan bool, group *sync.WaitGroup, p diary.IPage) {	disabl
 	router := mux.NewRouter()
 
 	// serve api html documentation on the root path
-	p.Info("bind.main", diary.M{
+	p.Info("http.bind.main", diary.M{
 		"path": "/",
 	})
 	router.HandleFunc("/", func(writer http.ResponseWriter, request *http.Request) {
@@ -29,7 +30,7 @@ func RunAfter(shutdown chan bool, group *sync.WaitGroup, p diary.IPage) {	disabl
 	})
 
 	// serve openapi.json specification file
-	p.Info("bind.openapi", diary.M{
+	p.Info("http.bind.openapi", diary.M{
 		"path": "/openapi.json",
 	})
 	router.HandleFunc("/openapi.json", func(writer http.ResponseWriter, request *http.Request) {
@@ -39,7 +40,7 @@ func RunAfter(shutdown chan bool, group *sync.WaitGroup, p diary.IPage) {	disabl
 	})
 
 	// serve api javascript client
-	p.Info("bind.client", diary.M{
+	p.Info("http.bind.client", diary.M{
 		"path": "/client.js",
 	})
 	router.HandleFunc("/client.js", func(writer http.ResponseWriter, request *http.Request) {
@@ -48,8 +49,9 @@ func RunAfter(shutdown chan bool, group *sync.WaitGroup, p diary.IPage) {	disabl
 		_, _ = writer.Write(info.MustAsset("client.js"))
 	})
 
+	// add all requested bindings to web server
 	for topic, binding := range _base.Bindings {
-		if err := p.Scope("bind.http", func(s diary.IPage) {
+		if err := p.Scope("http.bind", func(s diary.IPage) {
 			s.Info("data", diary.M{
 				"method": binding.Method,
 				"path": binding.Path,
@@ -68,24 +70,60 @@ func RunAfter(shutdown chan bool, group *sync.WaitGroup, p diary.IPage) {	disabl
 		}
 	}
 
-	// todo: /auth/login endpoint
-	// todo: /auth/login/code-resend endpoint
-	// todo: /auth/login/code-validate endpoint
-	// todo: /auth/reset endpoint
-	// todo: /auth/reset/{id}/resend endpoint
-	// todo: /auth/reset/{id}/validate endpoint
-	// todo: /auth/reset/complete endpoint
+	srv := http.Server{
+		Addr: ":"+port,
+		// the always annoying CORS middleware, for added security of course ;)
+		Handler: &_base.CorsMiddleware{Router: router, Origin: origin},
+	}
+	p.Info("http.server", diary.M{
+		"addr": ":"+port,
+	})
 
-	// todo: bind all entity endpoints
-
+	// wait for shutdown signal in separate thread
 	go func() {
+		group.Add(1)
+		defer group.Done()
+
+		// closing the shutdown chan will broadcast a close signal
+		<-shutdown
+
+		p.Notice("http.server.shutdown", diary.M{
+			"addr": ":"+port,
+		})
+
+		if err := srv.Shutdown(context.TODO()); err != nil {
+			p.Warning("http.server.stop.error", "failed to stop web server", diary.M{
+				"addr": ":"+port,
+				"error": err,
+				"errorMsg": err.Error(),
+			})
+		} else {
+			p.Notice("http.server.stop", diary.M{
+				"addr": ":"+port,
+			})
+		}
+	}()
+
+	// run web server in separate thread
+	go func() {
+		group.Add(1)
+		defer group.Done()
+
+		p.Notice("http.server.start", diary.M{
+			"addr": ":"+port,
+		})
+
 		if !disableTls {
-			if err := http.ListenAndServeTLS(":"+port, tlsCert, tlsKey, &_base.CorsMiddleware{router, origin}); err != nil {
-				panic(err)
+			if err := srv.ListenAndServeTLS(tlsCert, tlsKey); err != nil {
+				if err != http.ErrServerClosed {
+					panic(err)
+				}
 			}
 		} else {
-			if err := http.ListenAndServe(":"+port, &_base.CorsMiddleware{router, origin}); err != nil {
-				panic(err)
+			if err := srv.ListenAndServe(); err != nil {
+				if err != http.ErrServerClosed {
+					panic(err)
+				}
 			}
 		}
 	}()

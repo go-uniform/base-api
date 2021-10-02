@@ -54,7 +54,5 @@ func init() {
 	runCmd.Flags().StringVarP(&origin, "origin", "o", "*", "The allow origin list for CORS")
 	runCmd.Flags().StringVarP(&jwt, "jwt", "", "/etc/ssl/jwt.pub", "The public rsa key used to verify JWTs")
 
-	// todo: add custom CLI flag validations here
-
 	_base.RootCmd.AddCommand(runCmd)
 }
