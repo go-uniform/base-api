@@ -5,14 +5,16 @@ import (
 	"github.com/go-diary/diary"
 	"github.com/gorilla/mux"
 	"net/http"
+	"service/service/_base"
+	"service/service/info"
 )
 
 func RunAfter(p diary.IPage) {
-	disableTls := args["disableTls"].(bool)
-	port := fmt.Sprint(args["port"])
-	tlsCert := fmt.Sprint(args["tlsCert"])
-	tlsKey := fmt.Sprint(args["tlsKey"])
-	origin := fmt.Sprint(args["origin"])
+	disableTls := info.Args["disableTls"].(bool)
+	port := fmt.Sprint(info.Args["port"])
+	tlsCert := fmt.Sprint(info.Args["tlsCert"])
+	tlsKey := fmt.Sprint(info.Args["tlsKey"])
+	origin := fmt.Sprint(info.Args["origin"])
 
 	router := mux.NewRouter()
 
@@ -23,7 +25,7 @@ func RunAfter(p diary.IPage) {
 	router.HandleFunc("/", func(writer http.ResponseWriter, request *http.Request) {
 		writer.Header().Set("Content-Type", "text/html")
 		writer.WriteHeader(200)
-		_, _ = writer.Write(MustAsset("api.html"))
+		_, _ = writer.Write(info.MustAsset("api.html"))
 	})
 
 	// serve openapi.json specification file
@@ -33,7 +35,7 @@ func RunAfter(p diary.IPage) {
 	router.HandleFunc("/openapi.json", func(writer http.ResponseWriter, request *http.Request) {
 		writer.Header().Set("Content-Type", "application/json")
 		writer.WriteHeader(200)
-		_, _ = writer.Write(MustAsset("openapi.json"))
+		_, _ = writer.Write(info.MustAsset("openapi.json"))
 	})
 
 	// serve api javascript client
@@ -43,16 +45,16 @@ func RunAfter(p diary.IPage) {
 	router.HandleFunc("/client.js", func(writer http.ResponseWriter, request *http.Request) {
 		writer.Header().Set("Content-Type", "application/json")
 		writer.WriteHeader(200)
-		_, _ = writer.Write(MustAsset("client.js"))
+		_, _ = writer.Write(info.MustAsset("client.js"))
 	})
 
-	for topic, binding := range bindings {
+	for topic, binding := range _base.bindings {
 		if err := p.Scope("bind.http", func(s diary.IPage) {
 			s.Info("data", diary.M{
 				"method": binding.Method,
 				"path": binding.Path,
 			})
-			router.HandleFunc(binding.Path, bindHandler(
+			router.HandleFunc(binding.Path, _base.bindHandler(
 				s,
 				binding.Timeout,
 				topic,
@@ -78,11 +80,11 @@ func RunAfter(p diary.IPage) {
 
 	go func() {
 		if !disableTls {
-			if err := http.ListenAndServeTLS(":"+port, tlsCert, tlsKey, &CorsMiddleware{router, origin}); err != nil {
+			if err := http.ListenAndServeTLS(":"+port, tlsCert, tlsKey, &_base.CorsMiddleware{router, origin}); err != nil {
 				panic(err)
 			}
 		} else {
-			if err := http.ListenAndServe(":"+port, &CorsMiddleware{router, origin}); err != nil {
+			if err := http.ListenAndServe(":"+port, &_base.CorsMiddleware{router, origin}); err != nil {
 				panic(err)
 			}
 		}

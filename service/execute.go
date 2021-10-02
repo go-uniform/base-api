@@ -11,6 +11,9 @@ import (
 	_ "service/service/commands"
 	_ "service/service/events"
 	_ "service/service/hooks"
+
+	// load bindings (base-api only)
+	_ "service/service/binds"
 )
 
 // wrap base execute to avoid circular reference

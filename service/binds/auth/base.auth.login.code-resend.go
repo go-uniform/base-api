@@ -2,13 +2,13 @@ package auth
 
 import (
 	"net/http"
-	"service/service"
+	"service/service/_base"
 )
 
 const TopicAuthLoginCodeResend = "auth.login.code-resend"
 
 func init() {
-	service.bind(TopicAuthLoginCodeResend, http.MethodPost, "/auth/login/code-resend", nil, func(request service.M) service.M {
+	_base.bind(TopicAuthLoginCodeResend, http.MethodPost, "/auth/login/code-resend", nil, func(request _base.M) _base.M {
 		// todo: use uniform validator to validate fields
 		// validator := uniform.NewValidator()
 		for key, value := range request {

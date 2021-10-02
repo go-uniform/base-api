@@ -6,12 +6,13 @@ import (
 	"github.com/dgrijalva/jwt-go"
 	"github.com/go-diary/diary"
 	"io/ioutil"
+	"service/service/info"
 )
 
 var rsaPublic *rsa.PublicKey
 
 func RunBefore(p diary.IPage) {
-	data, err := ioutil.ReadFile(fmt.Sprint(args["jwt"]))
+	data, err := ioutil.ReadFile(fmt.Sprint(info.Args["jwt"]))
 	if err != nil {
 		panic(err)
 	}

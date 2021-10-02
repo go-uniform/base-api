@@ -1,4 +1,4 @@
-package service
+package _base
 
 import (
 	"fmt"
@@ -7,6 +7,7 @@ import (
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"
+	"service/service"
 	"strings"
 	"time"
 )
@@ -33,7 +34,7 @@ func verifyToken(p diary.IPage, token string, r *http.Request) jwt.MapClaims {
 		if _, ok := token.Method.(*jwt.SigningMethodRSA); !ok {
 			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
 		}
-		return rsaPublic, nil
+		return service.rsaPublic, nil
 	})
 	if err != nil {
 		p.Warning("verify.jwt.parse", "unable to parse JWT", diary.M{

@@ -1,4 +1,4 @@
-package service
+package _base
 
 import (
 	"encoding/base64"
@@ -54,10 +54,10 @@ var checkAuth = func(p diary.IPage, r *http.Request, permissions []string) (stri
 	return token, claims, mineOnly
 }
 
-var getRequestBody = func(p diary.IPage, r *http.Request, validateRequest func(M) M) M {
-	requestBody := M{}
+var getRequestBody = func(p diary.IPage, r *http.Request, validateRequest func(uniform.M) uniform.M) uniform.M {
+	requestBody := uniform.M{}
 
-	if !contains([]string{http.MethodGet}, r.Method, false) {
+	if !uniform.Contains([]string{http.MethodGet}, r.Method, false) {
 		// handle file uploads
 		if strings.HasPrefix(r.Header.Get("Content-Type"), "multipart/") {
 			// Parse our multipart form, 10 << 20 specifies a maximum upload of 10 MB files.
@@ -73,7 +73,7 @@ var getRequestBody = func(p diary.IPage, r *http.Request, validateRequest func(M
 				data, err := ioutil.ReadAll(file)
 				if err != nil {
 					p.Warning("bind.body.read", "failed to read body", diary.M{
-						"path":  r.URL.RequestURI(),
+						"path":     r.URL.RequestURI(),
 						"errorMsg": err.Error(),
 						"error":    err,
 					})
@@ -81,7 +81,7 @@ var getRequestBody = func(p diary.IPage, r *http.Request, validateRequest func(M
 				}
 				_ = file.Close()
 
-				requestBody = M{
+				requestBody = uniform.M{
 					"file": base64.StdEncoding.EncodeToString(data),
 				}
 			}
@@ -172,10 +172,10 @@ var checkBasicPermissions = func(r *http.Request, claims jwt.MapClaims, paramete
 					filterMine = true
 				}
 			} else if key == "id" && linkedEntity != "" {
-				filterMine = contains(links[linkedEntity], value, false)
+				filterMine = uniform.Contains(links[linkedEntity], value, false)
 			} else if linkKey != "" {
 				for _, singleValue := range strings.Split(value, ",") {
-					if !contains(links[linkKey], singleValue, false) {
+					if !uniform.Contains(links[linkKey], singleValue, false) {
 						allMine = false
 					}
 				}
@@ -210,7 +210,7 @@ var checkBasicPermissions = func(r *http.Request, claims jwt.MapClaims, paramete
 					}
 				} else if linkKey != "" {
 					for _, singleValue := range strings.Split(value, ",") {
-						if !contains(links[linkKey], singleValue, false) {
+						if !uniform.Contains(links[linkKey], singleValue, false) {
 							allMine = false
 						}
 					}
@@ -251,7 +251,7 @@ func bindHandler(s diary.IPage, timeout time.Duration, topic string, extract fun
 			}
 
 			// extract and validate path and query parameters using custom extract routine
-			var parameters map[string]string = nil
+			var parameters uniform.P
 			if extract != nil {
 				parameters = extract(r)
 			}
