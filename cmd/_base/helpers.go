@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"github.com/nats-io/go-nats"
 	"github.com/spf13/cobra"
-	"service/service"
+	"service/service/info"
 )
 
 func CompileNatsOptions() []nats.Option {
@@ -29,7 +29,7 @@ func CompileNatsOptions() []nats.Option {
 
 func Command(name string, handler func(cmd *cobra.Command, args []string), description string) *cobra.Command {
 	if description == "" {
-		description = fmt.Sprintf("Request the running %s to execute the %s command", service.AppName, name)
+		description = fmt.Sprintf("Request the running %s to execute the %s command", info.AppName, name)
 	}
 	return &cobra.Command{
 		Use:   fmt.Sprintf("command:%s", name),

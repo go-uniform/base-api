@@ -5,7 +5,7 @@ import (
 	"github.com/nats-io/go-nats"
 	"github.com/spf13/cobra"
 	"os"
-	"service/service"
+	"service/service/info"
 )
 
 var NatsUri string
@@ -14,9 +14,9 @@ var NatsKey string
 var DisableTls bool
 
 var RootCmd = &cobra.Command{
-	Use:   service.AppName,
-	Short: service.AppDescription,
-	Long:  service.AppDescription,
+	Use:   info.AppName,
+	Short: info.AppDescription,
+	Long:  info.AppDescription,
 	Run: func(cmd *cobra.Command, args []string) {
 		if err := cmd.Help(); err != nil {
 			panic(err)

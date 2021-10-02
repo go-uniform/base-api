@@ -24,7 +24,9 @@ func ping(r uniform.IRequest, p diary.IPage) {
 	p.Notice("pong", context)
 
 	if r.CanReply() {
-		if err := r.Reply(uniform.Request{}); err != nil {
+		if err := r.Reply(uniform.Request{
+			Model: "pong",
+		}); err != nil {
 			p.Error("reply", err.Error(), diary.M{
 				"err": err,
 			})

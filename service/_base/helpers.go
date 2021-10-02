@@ -3,15 +3,16 @@ package _base
 import (
 	"fmt"
 	"github.com/go-uniform/uniform"
+	"service/service/info"
 	"strings"
 )
 
 // use this to separate project specific logic from non-specific logic
 var TargetLocal = func(topic string) string {
 	if topic == "" {
-		return AppProject
+		return info.AppProject
 	}
-	return fmt.Sprintf("%s.%s", AppProject, strings.TrimPrefix(topic, AppProject+ "."))
+	return fmt.Sprintf("%s.%s", info.AppProject, strings.TrimPrefix(topic, info.AppProject+ "."))
 }
 
 // use this to target a topic for system specific action
@@ -62,7 +63,7 @@ var TargetEvent = func(service, event string) string {
 
 // use this to target a topic for a function that the service exposes
 var TargetAction = func(action string) string {
-	return fmt.Sprintf("action.%s.%s", AppService, action)
+	return fmt.Sprintf("action.%s.%s", info.AppService, action)
 }
 
 // add a topic/handler combination to the actions map
