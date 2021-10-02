@@ -1,4 +1,4 @@
-package actions
+package integrations
 
 /*Placeholder
 Just a placeholder to ensure package exists even without any actual integrations

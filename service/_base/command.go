@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-func Command(cmd string, timeout time.Duration, natsUri string, natsOptions []nats.Option, args map[string]string, responseHandler func([]byte)) {
+func Command(cmd string, timeout time.Duration, natsUri string, natsOptions []nats.Option, args uniform.P, responseHandler func([]byte)) {
 	// no diary for commands since we want response data to be only thing is stdout
 	InitializeNoDiary()
 

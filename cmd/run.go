@@ -25,6 +25,11 @@ func init() {
 		Long:  "Run " + info.AppName + " service",
 		Run: func(cmd *cobra.Command, args []string) {
 			service.Execute(level, rate, limit, test, _base.NatsUri, _base.CompileNatsOptions(), uniform.M{
+				"nats": _base.NatsUri,
+				"natsCert": _base.NatsCert,
+				"natsKey": _base.NatsKey,
+				"disableTls": _base.DisableTls,
+
 				"port": port,
 				"tlsCert": tlsCert,
 				"tlsKey": tlsKey,
