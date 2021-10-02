@@ -9,6 +9,7 @@ import (
 	"os/signal"
 	"reflect"
 	"runtime"
+	"service/cmd/_base"
 	"service/service/info"
 	"strings"
 	"syscall"
@@ -36,7 +37,19 @@ func Execute(limit int, test bool, natsUri string, natsOptions []nats.Option, ru
 	defer c.Close()
 
 	d.Page(-1, traceRate, true, info.AppName, nil, "", "", nil, func(p diary.IPage) {
+		p.Notice("startup", diary.M{
+			"nats": _base.NatsUri,
+			"natsCert": _base.NatsCert,
+			"natsKey": _base.NatsKey,
+			"disableTls": _base.DisableTls,
+			"lvl": info.Args["lvl"],
+			"rate": info.Args["rate"],
+			"limit": info.Args["limit"],
+			"test": info.Args["test"],
+		})
+
 		// service custom run routine before subscribing actions
+		p.Notice("run.before", nil)
 		if err := p.Scope("run.before", func(p diary.IPage) {
 			runBefore(p)
 		}); err != nil {
@@ -44,6 +57,7 @@ func Execute(limit int, test bool, natsUri string, natsOptions []nats.Option, ru
 		}
 
 		// subscribe all actions [generic]
+		p.Notice("subscribe", nil)
 		for topic, handler := range actions {
 			p.Info(fmt.Sprintf("subscribe.%s", topic), diary.M{
 				"project": info.AppProject,
@@ -86,6 +100,7 @@ func Execute(limit int, test bool, natsUri string, natsOptions []nats.Option, ru
 		}
 
 		// service custom run routine after subscribing actions
+		p.Notice("run.after", nil)
 		if err := p.Scope("run.after", func(p diary.IPage) {
 			runAfter(p)
 		}); err != nil {

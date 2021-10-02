@@ -29,6 +29,10 @@ func init() {
 				"natsCert": _base.NatsCert,
 				"natsKey": _base.NatsKey,
 				"disableTls": _base.DisableTls,
+				"lvl": level,
+				"rate": rate,
+				"limit": limit,
+				"test": test,
 
 				"port": port,
 				"tlsCert": tlsCert,
@@ -40,7 +44,7 @@ func init() {
 	}
 
 	// set the service's environment configurations via many command-line-interface (CLI) arguments
-	runCmd.Flags().StringVarP(&level, "lvl", "l", "trace", "The logging level ['trace', 'debug', 'info', 'notice', 'warning', 'error', 'fatal'] that service is running in")
+	runCmd.Flags().StringVarP(&level, "lvl", "l", "notice", "The logging level ['trace', 'debug', 'info', 'notice', 'warning', 'error', 'fatal'] that service is running in")
 	runCmd.Flags().IntVarP(&rate, "rate", "r", 1000, "The sample rate of the trace logs used for performance auditing [set to -1 to log every trace]")
 	runCmd.Flags().IntVarP(&limit, "limit", "x", 1000, "The messages per second that each topic worker will be limited to [set to 0 or less for maximum throughput]")
 	runCmd.Flags().BoolVar(&test, "test", false, "A flag indicating if service should enter into test mode")
