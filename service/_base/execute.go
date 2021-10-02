@@ -141,8 +141,9 @@ func Execute(limit int, test bool, natsUri string, natsOptions []nats.Option, ru
 
 		// unsubscribe all actions
 		for topic, subscription := range subscriptions {
-			p.Notice("unsubscribe", diary.M{
-				"topic": topic,
+			p.Info(fmt.Sprintf("unsubscribe.%s", topic), diary.M{
+				"project": info.AppProject,
+				"topic":   topic,
 			})
 			if err := subscription.Unsubscribe(); err != nil {
 				p.Error("unsubscribe", "failed to unsubscribe from topic", diary.M{
