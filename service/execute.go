@@ -6,11 +6,13 @@ import (
 	"service/service/_base"
 	"service/service/info"
 
-	// load all actions, commands, events and hooks
+	// load all actions, commands, events, hooks, entities and integrations
 	_ "service/service/actions"
 	_ "service/service/commands"
 	_ "service/service/events"
 	_ "service/service/hooks"
+	_ "service/service/entities"
+	_ "service/service/integrations"
 
 	// load bindings (base-api only)
 	_ "service/service/binds"
