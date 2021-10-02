@@ -142,6 +142,20 @@ func Execute(limit int, test bool, natsUri string, natsOptions []nats.Option, ru
 
 		// trigger shutdown to notify all other threads
 		p.Notice("shutdown", nil)
+		close(shutdown)
+
+		// give other threads 3 seconds to execute graceful shutdown otherwise just forcefully shutdown
+		waitCh := make(chan bool)
+		go func() {
+			group.Wait()
+			close(waitCh)
+		}()
+		select {
+		case <-time.Tick(time.Second * 3):
+			break
+		case <-waitCh:
+			break
+		}
 
 		p.Notice("unsubscribe.all", diary.M{
 			"topics.actions": reflect.ValueOf(actions).MapKeys(),
