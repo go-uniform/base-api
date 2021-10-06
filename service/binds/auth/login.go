@@ -6,10 +6,8 @@ import (
 	"service/service/_base"
 )
 
-const TopicAuthLogin = "auth.login"
-
 func init() {
-	_base.Bind(TopicAuthLogin, http.MethodPost, "/auth/login", nil, func(request uniform.M) uniform.M {
+	_base.Bind("auth.login", http.MethodPost, "/auth/login", nil, func(request uniform.M) uniform.M {
 		// todo: use uniform validator to validate fields
 		// validator := uniform.NewValidator()
 		for key, value := range request {

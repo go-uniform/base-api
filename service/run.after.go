@@ -39,16 +39,6 @@ func RunAfter(shutdown chan bool, group *sync.WaitGroup, p diary.IPage) {	disabl
 		_, _ = writer.Write(info.MustAsset("openapi.json"))
 	})
 
-	// serve api javascript client
-	p.Info("http.bind.client", diary.M{
-		"path": "/client.js",
-	})
-	router.HandleFunc("/client.js", func(writer http.ResponseWriter, request *http.Request) {
-		writer.Header().Set("Content-Type", "application/json")
-		writer.WriteHeader(200)
-		_, _ = writer.Write(info.MustAsset("client.js"))
-	})
-
 	// add all requested bindings to web server
 	for topic, binding := range _base.Bindings {
 		if err := p.Scope("http.bind", func(s diary.IPage) {
@@ -59,7 +49,7 @@ func RunAfter(shutdown chan bool, group *sync.WaitGroup, p diary.IPage) {	disabl
 			router.HandleFunc(binding.Path, _base.BindHandler(
 				s,
 				binding.Timeout,
-				topic,
+				_base.TargetLocal(topic),
 				binding.Extract,
 				binding.ValidateRequest,
 				binding.ConvertResponse,
@@ -114,12 +104,14 @@ func RunAfter(shutdown chan bool, group *sync.WaitGroup, p diary.IPage) {	disabl
 		})
 
 		if !disableTls {
+			fmt.Printf("\n\nhttps://127.0.0.1:%s\n\n\n", port)
 			if err := srv.ListenAndServeTLS(tlsCert, tlsKey); err != nil {
 				if err != http.ErrServerClosed {
 					panic(err)
 				}
 			}
 		} else {
+			fmt.Printf("\n\nhttp://127.0.0.1:%s\n\n\n", port)
 			if err := srv.ListenAndServe(); err != nil {
 				if err != http.ErrServerClosed {
 					panic(err)
