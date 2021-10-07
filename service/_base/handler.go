@@ -7,6 +7,7 @@ import (
 	"github.com/dgrijalva/jwt-go"
 	"github.com/go-diary/diary"
 	"github.com/go-uniform/uniform"
+	"go.mongodb.org/mongo-driver/bson"
 	"net/http"
 	"service/service/info"
 	"strconv"
@@ -154,9 +155,17 @@ func BindHandler(s diary.IPage, timeout time.Duration, topic string, extract fun
 				if r.HasError() {
 					panic(r.Error())
 				}
-				r.Read(response)
 				// response parameters will act as response headers since HTTP responses can't have parameters
 				responseHeaders = r.Parameters()
+
+				if responseHeaders["-encoding"] == "base64" {
+					r.Read(&response)
+				} else {
+					var tmp bson.M
+					r.Read(&tmp)
+					response = tmp
+				}
+
 			}); err != nil {
 				panic(err)
 			}
