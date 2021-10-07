@@ -1,9 +1,12 @@
 package _base
 
 import (
+	"fmt"
 	"github.com/go-diary/diary"
 	"github.com/go-uniform/uniform"
 	"github.com/nats-io/go-nats"
+	"os"
+	"runtime/debug"
 	"service/service/info"
 	"time"
 )
@@ -16,26 +19,32 @@ func Command(cmd string, timeout time.Duration, natsUri string, natsOptions []na
 	if err != nil {
 		panic(err)
 	}
-	c, err = uniform.ConnectorNats(d, natsConn)
+	info.Conn, err = uniform.ConnectorNats(info.Diary, natsConn)
 	if err != nil {
 		panic(err)
 	}
 
-	defer c.Close()
+	defer info.Conn.Close()
 
-	d.Page(-1, traceRate, true, info.AppName, nil, "", "", nil, func(p diary.IPage) {
-		if err := c.Request(p, TargetCommand(cmd), timeout, uniform.Request{
-			Parameters: args,
+	info.Diary.Page(-1, info.TraceRate, true, info.AppName, nil, "", "", nil, func(p diary.IPage) {
+		if err := info.Conn.Request(p, TargetCommand(cmd), timeout, uniform.Request{
+			Model: args,
 		}, func(r uniform.IRequest, p diary.IPage) {
+			if r.HasError() {
+				fmt.Println(r.Error())
+				os.Exit(1)
+			}
 			if responseHandler != nil {
 				var data []byte
 				r.Read(&data)
 				responseHandler(data)
 			}
 		}); err != nil {
-			panic(err)
+			fmt.Println(err.Error())
+			fmt.Println(string(debug.Stack()))
+			os.Exit(1)
 		}
 	})
 
-	_ = c.Drain()
+	_ = info.Conn.Drain()
 }

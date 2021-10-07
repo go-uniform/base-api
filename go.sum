@@ -79,6 +79,8 @@ github.com/go-diary/diary v0.0.0-20210101215357-b1f47bcad4b4 h1:b0s+1Ug2ZuPQurUf
 github.com/go-diary/diary v0.0.0-20210101215357-b1f47bcad4b4/go.mod h1:EU6zGM4QDHXthfEbIrMTqcERTAdPgA4JS+y3lYYEPI8=
 github.com/go-diary/diary v1.0.1 h1:pg30/6iUta0izx9Cj0RVoZDPjYAv096SXUVlEaDwZaA=
 github.com/go-diary/diary v1.0.1/go.mod h1:EU6zGM4QDHXthfEbIrMTqcERTAdPgA4JS+y3lYYEPI8=
+github.com/go-diary/diary v1.1.0 h1:A6ca3P3DEnfhDfH6MxrmFcdpQwGZV/41RSNzMXiZRPI=
+github.com/go-diary/diary v1.1.0/go.mod h1:EU6zGM4QDHXthfEbIrMTqcERTAdPgA4JS+y3lYYEPI8=
 github.com/go-gl/glfw v0.0.0-20190409004039-e6da0acd62b1/go.mod h1:vR7hzQXu2zJy9AVAgeJqvqgH9Q5CA+iKCZ2gyEVpxRU=
 github.com/go-gl/glfw/v3.3/glfw v0.0.0-20191125211704-12ad95a8df72/go.mod h1:tQ2UAYgL5IevRw8kRxooKSPJfGvJ9fJQFa0TUsXzTg8=
 github.com/go-gl/glfw/v3.3/glfw v0.0.0-20200222043503-6f7a984d4dc4/go.mod h1:tQ2UAYgL5IevRw8kRxooKSPJfGvJ9fJQFa0TUsXzTg8=
@@ -89,6 +91,8 @@ github.com/go-stack/stack v1.8.1 h1:ntEHSVwIt7PNXNpgPmVfMrNhLtgjlmnZha2kOpuRiDw=
 github.com/go-stack/stack v1.8.1/go.mod h1:dcoOX6HbPZSZptuspn9bctJ+N/CnF5gGygcUP3XYfe4=
 github.com/go-uniform/uniform v0.0.0-20211001174043-897c8f2ee1d0 h1:l9WuJ+QTjM1c7AZcs65znOQBeuhcyvGOPeS9h18+CAM=
 github.com/go-uniform/uniform v0.0.0-20211001174043-897c8f2ee1d0/go.mod h1:6z51aaF30ZpbDXGdazLhO89nZtQw6LdVW+5e61C6NcY=
+github.com/go-uniform/uniform v0.0.0-20211006152323-0ca2e71383ee h1:cXfpkPuZAMQszS09os8jj/7dLJfXrFo3vu0aoaAv8cw=
+github.com/go-uniform/uniform v0.0.0-20211006152323-0ca2e71383ee/go.mod h1:6z51aaF30ZpbDXGdazLhO89nZtQw6LdVW+5e61C6NcY=
 github.com/gobuffalo/attrs v0.0.0-20190224210810-a9411de4debd/go.mod h1:4duuawTqi2wkkpB4ePgWMaai6/Kc6WEz83bhFwpHzj0=
 github.com/gobuffalo/depgen v0.0.0-20190329151759-d478694a28d3/go.mod h1:3STtPUQYuzV0gBVOY3vy6CfMm/ljR4pABfrTeHNLHUY=
 github.com/gobuffalo/depgen v0.1.0/go.mod h1:+ifsuy7fhi15RWncXQQKjWS9JPkdah5sZvtHc2RXGlg=
@@ -345,6 +349,8 @@ go.mongodb.org/mongo-driver v1.7.1 h1:jwqTeEM3x6L9xDXrCxN0Hbg7vdGfPBOTIkr0+/LYZD
 go.mongodb.org/mongo-driver v1.7.1/go.mod h1:Q4oFMbo1+MSNqICAdYMlC/zSTrwCogR4R8NzkI+yfU8=
 go.mongodb.org/mongo-driver v1.7.2 h1:pFttQyIiJUHEn50YfZgC9ECjITMT44oiN36uArf/OFg=
 go.mongodb.org/mongo-driver v1.7.2/go.mod h1:Q4oFMbo1+MSNqICAdYMlC/zSTrwCogR4R8NzkI+yfU8=
+go.mongodb.org/mongo-driver v1.7.3 h1:G4l/eYY9VrQAK/AUgkV0koQKzQnyddnWxrd/Etf0jIs=
+go.mongodb.org/mongo-driver v1.7.3/go.mod h1:NqaYOwnXWr5Pm7AOpO5QFxKJ503nbMse/R79oO62zWg=
 go.opencensus.io v0.21.0/go.mod h1:mSImk1erAIZhrmZN+AvHh14ztQfjbGwt4TtuofqLduU=
 go.opencensus.io v0.22.0/go.mod h1:+kGneAE2xo2IficOXnaByMWTGM9T73dGwxeWcUqIpI8=
 go.opencensus.io v0.22.2/go.mod h1:yxeiOL68Rb0Xd1ddK5vPZ/oVn4vY4Ynel7k9FzqtOIw=

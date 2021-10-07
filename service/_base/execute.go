@@ -24,22 +24,22 @@ func Execute(limit int, test bool, natsUri string, natsOptions []nats.Option, ru
 	}
 
 	// set global testMode flag based on test arg
-	testMode = test
+	info.TestMode = test
 
 	// connect to nats backbone
 	natsConn, err := nats.Connect(natsUri, natsOptions...)
 	if err != nil {
 		panic(err)
 	}
-	c, err = uniform.ConnectorNats(d, natsConn)
+	info.Conn, err = uniform.ConnectorNats(info.Diary, natsConn)
 	if err != nil {
 		panic(err)
 	}
 
 	// on exit close the nats connection
-	defer c.Close()
+	defer info.Conn.Close()
 
-	d.Page(-1, traceRate, true, info.AppName, nil, "", "", nil, func(p diary.IPage) {
+	info.Diary.Page(-1, info.TraceRate, true, info.AppName, nil, "", "", nil, func(p diary.IPage) {
 		// a channel that will be closed when shutdown signal is received
 		shutdown := make(chan bool)
 		// a group used to check that all parallel running threads have been closed before shutdown routine starts
@@ -72,7 +72,24 @@ func Execute(limit int, test bool, natsUri string, natsOptions []nats.Option, ru
 				"topic":   topic,
 				"handler": runtime.FuncForPC(reflect.ValueOf(handler).Pointer()).Name(),
 			})
-			subscription, err := c.QueueSubscribe(rateLimit, topic, info.AppService, handler)
+			subscription, err := info.Conn.QueueSubscribe(rateLimit, topic, info.AppService, func(r uniform.IRequest, p diary.IPage) {
+				defer func() {
+					if r := recover(); r != nil {
+						var err error
+						msg := "unexpected error occurred"
+						if rErr, ok := r.(error); ok {
+							err = rErr
+							msg = rErr.Error()
+						}
+						p.Error(fmt.Sprintf("subscribe.%s", topic), msg, diary.M{
+							"recover": r,
+							"error": err,
+						})
+					}
+				}()
+
+				handler(r, p)
+			})
 			if err != nil {
 				p.Error("subscribe", "failed to subscribe for topic", diary.M{
 					"project": info.AppProject,
@@ -96,7 +113,24 @@ func Execute(limit int, test bool, natsUri string, natsOptions []nats.Option, ru
 				"topic":   topic,
 				"handler": runtime.FuncForPC(reflect.ValueOf(handler).Pointer()).Name(),
 			})
-			subscription, err := c.QueueSubscribe(rateLimit, topic, info.AppService, handler)
+			subscription, err := info.Conn.QueueSubscribe(rateLimit, topic, info.AppService, func(r uniform.IRequest, p diary.IPage) {
+				defer func() {
+					if r := recover(); r != nil {
+						var err error
+						msg := "unexpected error occurred"
+						if rErr, ok := r.(error); ok {
+							err = rErr
+							msg = rErr.Error()
+						}
+						p.Error(fmt.Sprintf("subscribe.%s", topic), msg, diary.M{
+							"recover": r,
+							"error": err,
+						})
+					}
+				}()
+
+				handler(r, p)
+			})
 			if err != nil {
 				p.Error("subscribe", "failed to subscribe for topic", diary.M{
 					"project": info.AppProject,
@@ -179,6 +213,6 @@ func Execute(limit int, test bool, natsUri string, natsOptions []nats.Option, ru
 		}
 
 		p.Notice("drain", nil)
-		_ = c.Drain()
+		_ = info.Conn.Drain()
 	})
 }

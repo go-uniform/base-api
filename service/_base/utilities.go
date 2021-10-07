@@ -62,8 +62,14 @@ var TargetEvent = func(service, event string) string {
 }
 
 // use this to target a topic for a function that the service exposes
-var TargetAction = func(action string) string {
-	return fmt.Sprintf("action.%s.%s", info.AppService, action)
+var TargetAction = func(service, action string) string {
+	if service == "" {
+		return "action"
+	}
+	if action == "" {
+		return fmt.Sprintf("action.%s", service)
+	}
+	return fmt.Sprintf("action.%s.%s", service, action)
 }
 
 // add a topic/handler combination to the actions map

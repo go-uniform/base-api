@@ -8,7 +8,7 @@ import (
 )
 
 func InitializeNoDiary() {
-	d = diary.Dear(info.AppClient, info.AppProject, info.AppName, nil, info.AppRepository, info.AppCommit, []string{info.AppVersion}, nil, diary.LevelTrace, func(log diary.Log) {
+	info.Diary = diary.Dear(info.AppClient, info.AppProject, info.AppName, nil, info.AppRepository, info.AppCommit, []string{info.AppVersion}, nil, diary.LevelTrace, func(log diary.Log) {
 		// future: we may still want to write these logs to the remote log server
 
 		// don't write logs to stdout
@@ -28,7 +28,7 @@ func InitializeDiary(test bool, level string, rate int) {
 	if !diary.IsValidLevel(lvl) {
 		panic(fmt.Sprintf("level must be one of the following values: %s", strings.Join(diary.TextLevels, ", ")))
 	}
-	traceRate = rate
+	info.TraceRate = rate
 
-	d = diary.Dear(info.AppClient, info.AppProject, info.AppName, nil, info.AppRepository, info.AppCommit, []string{info.AppVersion}, nil, lvl, handler)
+	info.Diary = diary.Dear(info.AppClient, info.AppProject, info.AppName, nil, info.AppRepository, info.AppCommit, []string{info.AppVersion}, nil, lvl, handler)
 }
