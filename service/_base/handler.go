@@ -8,6 +8,7 @@ import (
 	"github.com/go-diary/diary"
 	"github.com/go-uniform/uniform"
 	"net/http"
+	"service/service/info"
 	"strconv"
 	"strings"
 	"time"
@@ -100,7 +101,7 @@ func BindHandler(s diary.IPage, timeout time.Duration, topic string, extract fun
 				allow := false
 
 				var response interface{}
-				if err := c.Request(p, TargetLocal("permissions.check"), timeout, uniform.Request{
+				if err := info.Conn.Request(p, TargetLocal("permissions.check"), timeout, uniform.Request{
 					Parameters: parameters,
 					Model: map[string]interface{}{
 						"method": r.Method,
@@ -145,7 +146,7 @@ func BindHandler(s diary.IPage, timeout time.Duration, topic string, extract fun
 			// push request into pub/sub backbone for processing
 			var responseHeaders uniform.P
 			var response interface{}
-			if err := c.Request(p, topic, timeout, uniform.Request{
+			if err := info.Conn.Request(p, topic, timeout, uniform.Request{
 				Parameters: parameters,
 				Model: requestBody,
 				Context: context,
