@@ -113,6 +113,8 @@ var getRequestBody = func(p diary.IPage, r *http.Request, validateRequest func(u
 				if strValue, ok := value.(string); ok {
 					if strings.Contains(strValue, ";base64,") {
 						requestBody[key] = strValue[strings.Index(strValue, ";base64,")+8:]
+					} else {
+						requestBody[key] = strings.TrimSpace(strValue)
 					}
 					date, err := time.Parse("2006-01-02", strValue)
 					if err == nil {
@@ -244,7 +246,7 @@ func extractToken(r *http.Request) string {
 }
 
 func ExtractIdPathParameter(r *http.Request) uniform.P {
-	return uniform.P{ "id": mux.Vars(r)["id"] }
+	return uniform.P{"id": mux.Vars(r)["id"]}
 }
 
 func verifyToken(p diary.IPage, token string, r *http.Request) jwt.MapClaims {
@@ -256,7 +258,7 @@ func verifyToken(p diary.IPage, token string, r *http.Request) jwt.MapClaims {
 	})
 	if err != nil {
 		p.Warning("verify.jwt.parse", "unable to parse JWT", diary.M{
-			"path": r.URL.RequestURI(),
+			"path":  r.URL.RequestURI(),
 			"token": token,
 		})
 		log.Println(err)
@@ -266,7 +268,7 @@ func verifyToken(p diary.IPage, token string, r *http.Request) jwt.MapClaims {
 	claims, ok := webToken.Claims.(jwt.MapClaims)
 	if !ok {
 		p.Warning("verify.jwt.claims", "JWT claims not ok", diary.M{
-			"path": r.URL.RequestURI(),
+			"path":     r.URL.RequestURI(),
 			"webToken": webToken,
 		})
 		return nil
@@ -276,10 +278,10 @@ func verifyToken(p diary.IPage, token string, r *http.Request) jwt.MapClaims {
 
 	if !claims.VerifyAudience(r.Host, true) {
 		p.Info("verify.jwt.aud", diary.M{
-			"path": r.URL.RequestURI(),
+			"path":     r.URL.RequestURI(),
 			"webToken": webToken,
-			"host": r.Host,
-			"aud": claims["aud"],
+			"host":     r.Host,
+			"aud":      claims["aud"],
 		})
 		return nil
 	}
