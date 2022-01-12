@@ -6,7 +6,7 @@ require (
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/go-diary/diary v1.1.0
 	github.com/go-stack/stack v1.8.1 // indirect
-	github.com/go-uniform/uniform v0.0.0-20211007210023-68c241eb7b68
+	github.com/go-uniform/uniform v0.0.0-20211014200403-c5003cf569d9
 	github.com/golang/snappy v0.0.4 // indirect
 	github.com/gorilla/mux v1.8.0
 	github.com/klauspost/compress v1.13.6 // indirect

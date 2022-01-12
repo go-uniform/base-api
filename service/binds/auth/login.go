@@ -8,31 +8,22 @@ import (
 
 func init() {
 	_base.Bind("auth.login", http.MethodPost, "/auth/login", nil, func(request uniform.M) uniform.M {
-		// todo: use uniform validator to validate fields
-		// validator := uniform.NewValidator()
-		for key, value := range request {
-			switch key {
-			default:
-				// validator.Error(key, "Unexpected field")
-				break
-			case "type":
-				if value == "" {
-					// validator.Error("type", "May not be empty")
-				}
-				break
-			case "identifier":
-				if value == "" {
-					// validator.Error("identifier", "May not be empty")
-				}
-				break
-			case "password":
-				if value == "" {
-					// validator.Error("password", "May not be empty")
-				}
-				break
-			}
+		fields := []string{
+			"type",
+			"identifier",
+			"password",
 		}
-		// validator.Check()
+		requiredFields := []string{
+			"type",
+			"identifier",
+			"password",
+		}
+
+		var validator uniform.IValidator
+		validator, request = uniform.RequestValidator(request, fields...)
+		request = validator.Required(request, requiredFields...)
+		validator.Validate()
+
 		return request
 	}, nil)
 }
