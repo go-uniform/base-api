@@ -1,10 +1,10 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="run" type="GoApplicationRunConfiguration" factoryName="Go Application">
-    <module name="api" />
+    <module name="base-api" />
     <working_directory value="$PROJECT_DIR$" />
-    <parameters value="run -p 9000 --disable-tls" />
+    <parameters value="run" />
     <kind value="PACKAGE" />
-    <package value="go-fluid/fluid/api" />
+    <package value="service" />
     <directory value="$PROJECT_DIR$" />
     <filePath value="$PROJECT_DIR$/main.go" />
     <method v="2">

@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="version" type="GoApplicationRunConfiguration" factoryName="Go Application">
-    <module name="base-service" />
+    <module name="base-api" />
     <working_directory value="$PROJECT_DIR$" />
     <parameters value="version" />
     <kind value="PACKAGE" />

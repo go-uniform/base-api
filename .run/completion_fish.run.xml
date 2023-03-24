@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="completion:fish" type="GoApplicationRunConfiguration" factoryName="Go Application" folderName="completion">
-    <module name="base-service" />
+    <module name="base-api" />
     <working_directory value="$PROJECT_DIR$" />
     <parameters value="completion fish" />
     <kind value="PACKAGE" />

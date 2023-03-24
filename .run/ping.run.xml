@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="commands:ping" type="GoApplicationRunConfiguration" factoryName="Go Application" folderName="commands">
-    <module name="base-service" />
+    <module name="base-api" />
     <working_directory value="$PROJECT_DIR$" />
     <parameters value="command:ping" />
     <kind value="PACKAGE" />
