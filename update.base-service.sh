@@ -1,3 +1,5 @@
+## This script synchronizes your repository with the latest parent base-service repository changes.
+
 remote_url=$(git remote get-url origin)
 if [ $remote_url == "git@github.com:go-uniform/base-service.git" ] || [ $remote_url == "https://github.com/go-uniform/base-service.git" ]
 then
