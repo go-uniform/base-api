@@ -1,0 +1,14 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="commands:ping" type="GoApplicationRunConfiguration" factoryName="Go Application" folderName="commands">
+    <module name="base-service" />
+    <working_directory value="$PROJECT_DIR$" />
+    <parameters value="command:ping" />
+    <kind value="PACKAGE" />
+    <package value="service" />
+    <directory value="$PROJECT_DIR$" />
+    <filePath value="$PROJECT_DIR$/main.go" />
+    <method v="2">
+      <option name="GoBeforeRunTask" command="generate" />
+    </method>
+  </configuration>
+</component>

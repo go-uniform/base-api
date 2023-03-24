@@ -1,0 +1,14 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="completion:powershell" type="GoApplicationRunConfiguration" factoryName="Go Application" folderName="completion">
+    <module name="base-service" />
+    <working_directory value="$PROJECT_DIR$" />
+    <parameters value="completion powershell" />
+    <kind value="PACKAGE" />
+    <package value="service" />
+    <directory value="$PROJECT_DIR$" />
+    <filePath value="$PROJECT_DIR$/main.go" />
+    <method v="2">
+      <option name="GoBeforeRunTask" command="generate" />
+    </method>
+  </configuration>
+</component>

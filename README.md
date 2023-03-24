@@ -1,6 +1,30 @@
 # base-service
 A templated starting point for uniform microservices
 
+### Prerequisites
+
+#### NATS Server
+Generate required TLS certificates:
+```
+sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/uniform-nats.key -out /etc/ssl/certs/uniform-nats.crt
+sudo chmod +r /etc/ssl/private/uniform-nats.key
+```
+Then install NATS server:
+```
+sudo su
+nats_latest_version=$(curl -i https://github.com/nats-io/nats-server/releases/latest | grep location: | sed 's/location: https:\/\/github.com\/nats-io\/nats-server\/releases\/tag\///g' | sed 's/.$//')
+nats_latest_zip=$(echo https://github.com/nats-io/nats-server/releases/download/$nats_latest_version/nats-server-$nats_latest_version-linux-amd64.zip)
+rm -f nats-server.zip
+rm -rf nats-server-$nats_latest_version-linux-amd64
+curl -L $nats_latest_zip -o nats-server.zip
+unzip -o nats-server.zip
+mv nats-server-$nats_latest_version-linux-amd64/nats-server /usr/bin/nats-server
+```
+Then run the NATS server: 
+```
+nats-server --tls --tlscert /etc/ssl/certs/uniform-nats.crt --tlskey /etc/ssl/private/uniform-nats.key
+```
+
 ### Getting Started
 First step is to compile resources and metadata into the project's source-code:
 ```
@@ -11,6 +35,7 @@ Create `.description` file to override the description as pulled from Github.
 Then ensure you set the `AppClient`, `AppProject` and `AppService` constants in the `service/run.go` file before doing anything else.
 
 ### CLI Commands
+_Note that a command will require at least one running service node in order for command to be executed._
 
 cmd command example `cmd/command.example-one.go`:
 ```
@@ -96,4 +121,13 @@ func init() {
 func exampleThree(r uniform.IRequest, p diary.IPage) {
 	// todo: write logic here
 }
+```
+
+### Maintenance
+
+#### Sync Template Repository
+```
+git remote add template git@github.com:go-uniform/base-service.git
+git fetch template main
+git merge template/main --allow-unrelated-histories
 ```

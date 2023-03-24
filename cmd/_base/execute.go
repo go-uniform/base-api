@@ -29,8 +29,8 @@ func init() {
 
 	// base infrastructure command-line arguments should be included on all cobra commands hence we link it to the RootCmd
 	RootCmd.PersistentFlags().StringVarP(&NatsUri, "nats", "n", nats.DefaultURL, "The nats cluster URI")
-	RootCmd.PersistentFlags().StringVarP(&NatsCert, "natsCert", "", "/etc/ssl/certs/ssl-bundle.crt", "The nats cluster TLS certificate file path")
-	RootCmd.PersistentFlags().StringVarP(&NatsKey, "natsKey", "", "/etc/ssl/private/ssl.key", "The nats cluster TLS key file path")
+	RootCmd.PersistentFlags().StringVarP(&NatsCert, "natsCert", "", "/etc/ssl/certs/uniform-nats.crt", "The nats cluster TLS certificate file path")
+	RootCmd.PersistentFlags().StringVarP(&NatsKey, "natsKey", "", "/etc/ssl/private/uniform-nats.key", "The nats cluster TLS key file path")
 	RootCmd.PersistentFlags().BoolVar(&DisableTls, "disableTls", false, "A flag indicating if service should disable tls encryption")
 }
 
