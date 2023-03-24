@@ -11,10 +11,11 @@ import (
 	"sync"
 )
 
-func RunAfter(shutdown chan bool, group *sync.WaitGroup, p diary.IPage) {	disableTls := info.Args["disableTls"].(bool)
+func RunAfter(shutdown chan bool, group *sync.WaitGroup, p diary.IPage) {
 	port := fmt.Sprint(info.Args["port"])
-	tlsCert := fmt.Sprint(info.Args["tlsCert"])
-	tlsKey := fmt.Sprint(info.Args["tlsKey"])
+	httpsCert := fmt.Sprint(info.Args["httpsCert"])
+	httpsKey := fmt.Sprint(info.Args["httpsKey"])
+	disableHttps := info.Args["disableHttps"].(bool)
 	origin := fmt.Sprint(info.Args["origin"])
 
 	router := mux.NewRouter()
@@ -44,7 +45,7 @@ func RunAfter(shutdown chan bool, group *sync.WaitGroup, p diary.IPage) {	disabl
 		if err := p.Scope("http.bind", func(s diary.IPage) {
 			s.Info("data", diary.M{
 				"method": binding.Method,
-				"path": binding.Path,
+				"path":   binding.Path,
 			})
 			router.HandleFunc(binding.Path, _base.BindHandler(
 				s,
@@ -53,7 +54,7 @@ func RunAfter(shutdown chan bool, group *sync.WaitGroup, p diary.IPage) {	disabl
 				binding.Extract,
 				binding.ValidateRequest,
 				binding.ConvertResponse,
-				binding.Permissions...
+				binding.Permissions...,
 			)).Methods(binding.Method)
 		}); err != nil {
 			panic(err)
@@ -61,12 +62,12 @@ func RunAfter(shutdown chan bool, group *sync.WaitGroup, p diary.IPage) {	disabl
 	}
 
 	srv := http.Server{
-		Addr: ":"+port,
+		Addr: ":" + port,
 		// the always annoying CORS middleware, for added security of course ;)
 		Handler: &_base.CorsMiddleware{Router: router, Origin: origin},
 	}
 	p.Info("http.server", diary.M{
-		"addr": ":"+port,
+		"addr": ":" + port,
 	})
 
 	// wait for shutdown signal in separate thread
@@ -78,18 +79,18 @@ func RunAfter(shutdown chan bool, group *sync.WaitGroup, p diary.IPage) {	disabl
 		<-shutdown
 
 		p.Notice("http.server.shutdown", diary.M{
-			"addr": ":"+port,
+			"addr": ":" + port,
 		})
 
 		if err := srv.Shutdown(context.TODO()); err != nil {
 			p.Warning("http.server.stop.error", "failed to stop web server", diary.M{
-				"addr": ":"+port,
-				"error": err,
+				"addr":     ":" + port,
+				"error":    err,
 				"errorMsg": err.Error(),
 			})
 		} else {
 			p.Notice("http.server.stop", diary.M{
-				"addr": ":"+port,
+				"addr": ":" + port,
 			})
 		}
 	}()
@@ -100,12 +101,12 @@ func RunAfter(shutdown chan bool, group *sync.WaitGroup, p diary.IPage) {	disabl
 		defer group.Done()
 
 		p.Notice("http.server.start", diary.M{
-			"addr": ":"+port,
+			"addr": ":" + port,
 		})
 
-		if !disableTls {
+		if !disableHttps {
 			fmt.Printf("\n\nhttps://127.0.0.1:%s\n\n\n", port)
-			if err := srv.ListenAndServeTLS(tlsCert, tlsKey); err != nil {
+			if err := srv.ListenAndServeTLS(httpsCert, httpsKey); err != nil {
 				if err != http.ErrServerClosed {
 					panic(err)
 				}

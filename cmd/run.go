@@ -14,8 +14,9 @@ func init() {
 	var limit int
 	var test bool
 	var port string
-	var tlsCert string
-	var tlsKey string
+	var httpsCert string
+	var httpsKey string
+	var disableHttps bool
 	var origin string
 	var jwt string
 
@@ -25,20 +26,21 @@ func init() {
 		Long:  "Run " + info.AppName + " service",
 		Run: func(cmd *cobra.Command, args []string) {
 			service.Execute(level, rate, limit, test, _base.NatsUri, _base.CompileNatsOptions(), uniform.M{
-				"nats": _base.NatsUri,
-				"natsCert": _base.NatsCert,
-				"natsKey": _base.NatsKey,
+				"nats":       _base.NatsUri,
+				"natsCert":   _base.NatsCert,
+				"natsKey":    _base.NatsKey,
 				"disableTls": _base.DisableTls,
-				"lvl": level,
-				"rate": rate,
-				"limit": limit,
-				"test": test,
+				"lvl":        level,
+				"rate":       rate,
+				"limit":      limit,
+				"test":       test,
 
-				"port": port,
-				"tlsCert": tlsCert,
-				"tlsKey": tlsKey,
-				"origin": origin,
-				"jwt": jwt,
+				"port":         port,
+				"httpsCert":    httpsCert,
+				"httpsKey":     httpsKey,
+				"disableHttps": disableHttps,
+				"origin":       origin,
+				"jwt":          jwt,
 			})
 		},
 	}
@@ -49,8 +51,9 @@ func init() {
 	runCmd.Flags().IntVarP(&limit, "limit", "x", 1000, "The messages per second that each topic worker will be limited to [set to 0 or less for maximum throughput]")
 	runCmd.Flags().BoolVar(&test, "test", false, "A flag indicating if service should enter into test mode")
 	runCmd.Flags().StringVarP(&port, "port", "p", "8000", "The webserver port to host on")
-	runCmd.Flags().StringVarP(&tlsCert, "tls-cert", "", "/etc/ssl/certs/ssl-bundle.crt", "The webserver TLS certificate file path")
-	runCmd.Flags().StringVarP(&tlsKey, "tls-key", "", "/etc/ssl/private/ssl.key", "The webserver TLS key file path")
+	runCmd.Flags().StringVarP(&httpsCert, "httpsCert", "", "/etc/ssl/certs/uniform-https.crt", "The webserver HTTPS certificate file path")
+	runCmd.Flags().StringVarP(&httpsKey, "httpsKey", "", "/etc/ssl/private/uniform-https.key", "The webserver HTTPS key file path")
+	runCmd.Flags().BoolVar(&disableHttps, "disableHttps", false, "A flag indicating if service should disable HTTPS encryption")
 	runCmd.Flags().StringVarP(&origin, "origin", "o", "*", "The allow origin list for CORS")
 	runCmd.Flags().StringVarP(&jwt, "jwt", "", "/etc/ssl/jwt.pub", "The public rsa key used to verify JWTs")
 
