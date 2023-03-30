@@ -27,7 +27,7 @@ func init() {
 	// future: enable support for AWS EventBridge, Azure Event Grid and Google Cloud Pub/Sub support as well to migrate to simplify cloud migration
 
 	// base infrastructure command-line arguments should be included on all cobra commands hence we link it to the RootCmd
-	RootCmd.PersistentFlags().StringVarP(&NatsUri, "nats", "n", "nats://localhost:4222", "The nats cluster URI")
+	RootCmd.PersistentFlags().StringVarP(&NatsUri, "nats", "n", "nats://nats:4222", "The nats cluster URI")
 	RootCmd.PersistentFlags().StringVarP(&NatsCert, "natsCert", "", "/etc/ssl/certs/uniform-nats.crt", "The nats cluster TLS certificate file path")
 	RootCmd.PersistentFlags().StringVarP(&NatsKey, "natsKey", "", "/etc/ssl/private/uniform-nats.key", "The nats cluster TLS key file path")
 	RootCmd.PersistentFlags().BoolVar(&DisableTls, "disableTls", false, "A flag indicating if service should disable tls encryption")
