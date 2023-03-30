@@ -19,12 +19,12 @@ import (
 )
 
 // wrap base execute to avoid circular reference
-func Execute(level string, rate, limit int, test bool, natsUri string, natsOptions []nats.Option, args uniform.M) {
+func Execute(level string, rate, limit int, test, virtual bool, natsUri string, natsOptions []nats.Option, args uniform.M) {
 	info.Args = args
 	if info.Args == nil {
 		info.Args = uniform.M{}
 	}
 
-	_base.InitializeDiary(test, level, rate)
-	_base.Execute(limit, test, natsUri, natsOptions, RunBefore, RunAfter)
+	_base.InitializeDiary(test, virtual, level, rate)
+	_base.Execute(limit, test, virtual, natsUri, natsOptions, RunBefore, RunAfter, ShutdownBefore, ShutdownAfter)
 }

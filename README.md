@@ -3,10 +3,27 @@ A templated starting point for uniform microservices
 
 ### Prerequisites
 
+#### Golang
+```
+sudo rm -rf /usr/bin/go
+sudo rm -rf /usr/local/go
+sudo rm -rf /usr/lib/golang
+sudo curl -L https://go.dev/dl/go1.20.2.linux-amd64.tar.gz -o go1.20.2.linux-amd64.tar.gz
+sudo mkdir -p /usr/lib/golang
+sudo tar --strip-components=1 -C /usr/lib/golang -xzf go1.20.2.linux-amd64.tar.gz
+sudo rm -f go1.20.2.linux-amd64.tar.gz
+```
+```
+export PATH="/usr/lib/golang/bin:$PATH"
+```
+Note append the above line to `~/.bashrc` file to permanently add directory to system path.
+
 #### NATS Server
 Generate required TLS certificates:
 ```
 sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/uniform-nats.key -out /etc/ssl/certs/uniform-nats.crt
+```
+```
 sudo chmod +r /etc/ssl/private/uniform-nats.key
 ```
 Then install NATS server:
@@ -23,6 +40,14 @@ mv nats-server-$nats_latest_version-linux-amd64/nats-server /usr/bin/nats-server
 Then run the NATS server: 
 ```
 nats-server --tls --tlscert /etc/ssl/certs/uniform-nats.crt --tlskey /etc/ssl/private/uniform-nats.key
+```
+
+#### HTTPS Certificates
+```
+sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/uniform-https.key -out /etc/ssl/certs/uniform-https.crt
+```
+```
+sudo chmod +r /etc/ssl/private/uniform-https.key
 ```
 
 ### Getting Started

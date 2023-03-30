@@ -16,7 +16,7 @@ func InitializeNoDiary() {
 	})
 }
 
-func InitializeDiary(test bool, level string, rate int) {
+func InitializeDiary(test, virtual bool, level string, rate int) {
 	handler := diary.HumanReadableHandler
 	if test {
 		// test mode is used for creating an automated testing environment

@@ -10,6 +10,9 @@ import (
 // A variable that indicates if service is in test mode
 var TestMode bool
 
+// A variable that indicates if service should virtualize external integration calls
+var Virtualize bool
+
 // A variable that contains the running diary instance
 var Diary diary.IDiary
 

@@ -1,4 +1,5 @@
 FROM scratch
-ADD build /
-ENTRYPOINT ["/build"]
+ADD build /service
+ENTRYPOINT ["/service"]
+HEALTHCHECK CMD ["/service command:ping"]
 CMD ["run"]
